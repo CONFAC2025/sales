@@ -23,7 +23,10 @@ const server = Fastify({
   logger: true,
 });
 
-server.register(cors, { origin: '*' });
+server.register(cors, {
+  origin: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+});
 server.register(websocket);
 server.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } });
 server.register(staticPlugin, {

@@ -1,14 +1,32 @@
-import { createContext, useContext } from 'react';
-import type { ReactNode } from 'react';
-
+import React, { createContext, useContext, useEffect, useRef, ReactNode, useCallback } from 'react';
+import { useAuth } from './AuthContext';
 import type { Notification } from '../types/notification';
 
-// Dummy emitter for now
-export const eventEmitter = {
-  subscribe: (_event: string, _callback: (data: any) => void) => {},
-  unsubscribe: (_event: string, _callback: (data: any) => void) => {},
-};
+// 1. Real Event Emitter
+class EventEmitter {
+  private listeners: { [event: string]: Function[] } = {};
 
+  subscribe(event: string, callback: Function) {
+    this.listeners[event] = this.listeners[event] || [];
+    this.listeners[event].push(callback);
+  }
+
+  unsubscribe(event: string, callback: Function) {
+    if (this.listeners[event]) {
+      this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
+    }
+  }
+
+  dispatch(event: string, data: any) {
+    if (this.listeners[event]) {
+      this.listeners[event].forEach(cb => cb(data));
+    }
+  }
+}
+
+export const eventEmitter = new EventEmitter();
+
+// 2. Context Type Definition
 interface NotificationContextType {
   notifications: Notification[];
   unreadCount: number;
@@ -18,14 +36,102 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
+// 3. Provider with WebSocket Logic
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
-  const notifications: Notification[] = [];
-  const unreadCount = 0;
+  const { isAuthenticated, token } = useAuth();
+  const [notifications, setNotifications] = React.useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = React.useState(0);
+  const socketRef = useRef<WebSocket | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Temporarily disabled WebSocket logic to isolate chat issues
+  const addNotification = useCallback((newNotification: Notification) => {
+    setNotifications(prev => [newNotification, ...prev.slice(0, 99)]); // Keep last 100
+    if (!newNotification.isRead) {
+      setUnreadCount(prev => prev + 1);
+    }
+  }, []);
 
-  const markNotificationAsRead = async (_notificationId: string) => {};
-  const markAsReadByLink = async (_link: string) => {};
+  useEffect(() => {
+    // Subscribe to events dispatched from WebSocket
+    eventEmitter.subscribe('NEW_NOTIFICATION', addNotification);
+    return () => {
+      eventEmitter.unsubscribe('NEW_NOTIFICATION', addNotification);
+    };
+  }, [addNotification]);
+
+  useEffect(() => {
+    if (isAuthenticated && token) {
+      connect();
+    } else {
+      disconnect();
+    }
+
+    return () => {
+      disconnect();
+    };
+  }, [isAuthenticated, token]);
+
+  const connect = () => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      return;
+    }
+
+    const wsUrl = 'wss://sales-ofg0.onrender.com/ws';
+    const socket = new WebSocket(wsUrl);
+    socketRef.current = socket;
+
+    socket.onopen = () => {
+      console.log('WebSocket connected');
+      // Send auth token
+      socket.send(JSON.stringify({ type: 'AUTH', payload: token }));
+      // Reset reconnect timer on successful connection
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+        reconnectTimeoutRef.current = null;
+      }
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log('WebSocket message received:', data);
+        // Dispatch the event globally
+        eventEmitter.dispatch(data.type, data.payload);
+      } catch (error) {
+        console.error('Failed to parse WebSocket message:', error);
+      }
+    };
+
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket disconnected. Attempting to reconnect...');
+      // Simple reconnect logic with a 5-second delay
+      if (!reconnectTimeoutRef.current) {
+        reconnectTimeoutRef.current = setTimeout(() => {
+          connect();
+          reconnectTimeoutRef.current = null;
+        }, 5000);
+      }
+    };
+  };
+
+  const disconnect = () => {
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+    if (socketRef.current) {
+      socketRef.current.close();
+      socketRef.current = null;
+    }
+  };
+
+  // Dummy implementations for now, can be built out later
+  const markNotificationAsRead = (_notificationId: string) => {};
+  const markAsReadByLink = (_link: string) => {};
 
   return (
     <NotificationContext.Provider value={{ notifications, unreadCount, markNotificationAsRead, markAsReadByLink }}>
