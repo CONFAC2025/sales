@@ -47,7 +47,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ open, onClo
         {loading && <Typography>Loading...</Typography>}
         {data && (
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid xs={12} md={6} component="div">
+            <Grid xs={12} md={6}>
               <Typography variant="h6" gutterBottom>상태별 통계</Typography>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data.stats.byStatus}>
@@ -59,7 +59,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ open, onClo
                 </BarChart>
               </ResponsiveContainer>
             </Grid>
-            <Grid xs={12} md={6} component="div">
+            <Grid xs={12} md={6}>
               <Typography variant="h6" gutterBottom>유입 경로별 통계</Typography>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data.stats.bySource}>
@@ -71,7 +71,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ open, onClo
                 </BarChart>
               </ResponsiveContainer>
             </Grid>
-            <Grid xs={12} component="div">
+            <Grid xs={12}>
               <Typography variant="h6" gutterBottom>고객 목록</Typography>
               <TableContainer component={Paper}>
                 <Table size="small">

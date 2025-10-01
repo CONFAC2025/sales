@@ -77,12 +77,12 @@ const LoginPage: React.FC = () => {
             로그인
           </Button>
           <Grid container justifyContent="space-between">
-            <Grid item>
+            <Grid>
               <Typography variant="body2" color="text.secondary">
                 가입후 승인되면 로그인 가능합니다
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Link component={RouterLink} to="/register" variant="body2">
                 계정이 없으신가요? 회원가입
               </Link>

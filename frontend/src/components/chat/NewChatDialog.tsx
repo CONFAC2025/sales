@@ -21,7 +21,7 @@ interface NewChatDialogProps {
 }
 
 const NewChatDialog: React.FC<NewChatDialogProps> = ({ open, onClose }) => {
-  const [targets, setTargets] = useState<UserResponse[]>([]);
+  const [targets, setTargets] = useState<UserForAdminResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const { startOneOnOneChat } = useChat();
 

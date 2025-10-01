@@ -7,6 +7,8 @@ export interface UserForAdminResponse {
   phone: string;
   status: UserStatus;
   userType: UserType;
+  departmentId?: string;
+  teamId?: string;
   departmentName?: string;
   teamName?: string;
   registeredCustomersCount: number;

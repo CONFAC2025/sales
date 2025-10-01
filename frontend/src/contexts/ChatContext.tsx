@@ -16,6 +16,7 @@ interface ChatContextType {
   closeRoom: (roomId: string) => void;
   openRoomIds: string[];
   startOneOnOneChat: (targetUserId: string) => Promise<void>;
+  sendSystemMessageToUser: (targetUserId: string, message: string) => Promise<void>;
   getRoomDisplayName: (room: ChatRoom) => string;
   deleteRoom: (roomId: string) => Promise<boolean>;
   totalUnreadCount: number;
@@ -121,6 +122,17 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const sendSystemMessageToUser = async (targetUserId: string, message: string) => {
+    try {
+      const room = await findOrCreateOneOnOneChat(targetUserId);
+      addRoom(room);
+      await sendMessage(room.id, message);
+      toast.success('확인 요청 메시지를 전송했습니다.');
+    } catch (error) {
+      toast.error('메시지 전송에 실패했습니다.');
+    }
+  };
+
   const deleteRoom = async (roomId: string): Promise<boolean> => {
     try {
       await apiDeleteChatRoom(roomId);
@@ -159,7 +171,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const totalUnreadCount = Object.values(unreadCounts).filter(count => count > 0).length;
 
   return (
-    <ChatContext.Provider value={{ rooms, messages, sendMessage, openRoom, closeRoom, openRoomIds, startOneOnOneChat, getRoomDisplayName, deleteRoom, totalUnreadCount, unreadCounts, addRoom, deleteMessage }}>
+    <ChatContext.Provider value={{ rooms, messages, sendMessage, openRoom, closeRoom, openRoomIds, startOneOnOneChat, sendSystemMessageToUser, getRoomDisplayName, deleteRoom, totalUnreadCount, unreadCounts, addRoom, deleteMessage }}>
       {children}
     </ChatContext.Provider>
   );

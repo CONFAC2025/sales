@@ -23,7 +23,7 @@ interface CreateChatRoomDialogProps {
 }
 
 const CreateChatRoomDialog: React.FC<CreateChatRoomDialogProps> = ({ open, onClose }) => {
-  const [subordinates, setSubordinates] = useState<UserResponse[]>([]);
+  const [subordinates, setSubordinates] = useState<UserForAdminResponse[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [roomName, setRoomName] = useState('');
   const { addRoom } = useChat();

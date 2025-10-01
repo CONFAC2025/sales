@@ -60,8 +60,8 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, onCancel }) => {
     }
     const dataToSubmit = {
       ...formData,
-      departmentId: formData.departmentId || null,
-      teamId: formData.teamId || null,
+      departmentId: formData.departmentId || undefined,
+      teamId: formData.teamId || undefined,
     };
     onSubmit(dataToSubmit);
   };

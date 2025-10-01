@@ -15,7 +15,8 @@ import {
   Chip,
 } from '@mui/material';
 import { getOrganizationTree } from '../services/organizationService';
-import type { Department, Team, User } from '../services/organizationService';
+import type { Department, Team } from '../services/organizationService';
+import type { User } from '../types/user';
 import { UserStatus } from '@prisma/client';
 import { translateUserType } from '../utils/user';
 import toast from 'react-hot-toast';

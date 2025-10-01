@@ -17,6 +17,7 @@ import {
   useMediaQuery,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Divider,
   Chip,
@@ -267,25 +268,26 @@ const Layout: React.FC = () => {
             ) : (
               notifications.map((notification, index) => (
                 <React.Fragment key={notification.id}>
-                  <ListItem 
-                    button 
-                    onClick={() => handleNotificationItemClick(notification.id, notification.link)}
-                    sx={{ 
-                      backgroundColor: notification.isRead ? 'transparent' : '#f5f5f5',
-                      alignItems: 'flex-start'
-                    }}
-                  >
-                    <ListItemText 
-                      primaryTypographyProps={{ fontWeight: notification.isRead ? 'normal' : 'bold' }}
-                      primary={notification.message} 
-                      secondary={new Date(notification.createdAt).toLocaleString()} 
-                    />
-                    <Chip 
-                      label={notification.isRead ? '확인완료' : '확인전'} 
-                      color={notification.isRead ? 'default' : 'primary'} 
-                      size="small"
-                      sx={{ ml: 2, mt: 0.5 }}
-                    />
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() => handleNotificationItemClick(notification.id, notification.link)}
+                      sx={{ 
+                        backgroundColor: notification.isRead ? 'transparent' : '#f5f5f5',
+                        alignItems: 'flex-start'
+                      }}
+                    >
+                      <ListItemText 
+                        primaryTypographyProps={{ fontWeight: notification.isRead ? 'normal' : 'bold' }}
+                        primary={notification.message} 
+                        secondary={new Date(notification.createdAt).toLocaleString()} 
+                      />
+                      <Chip 
+                        label={notification.isRead ? '확인완료' : '확인전'} 
+                        color={notification.isRead ? 'default' : 'primary'} 
+                        size="small"
+                        sx={{ ml: 2, mt: 0.5 }}
+                      />
+                    </ListItemButton>
                   </ListItem>
                   {index < notifications.length - 1 && <Divider />}
                 </React.Fragment>

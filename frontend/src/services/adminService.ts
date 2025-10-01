@@ -1,6 +1,6 @@
 import api from './api';
 import type { UserStatus, UserType } from '@prisma/client';
-export type { UserForAdminResponse, CreateUserPayload } from '../types/admin';
+import type { UserForAdminResponse, CreateUserPayload } from '../types/admin';
 
 // Type for the response of getCustomersByRegistrant
 export interface CustomerDetailsResponse {

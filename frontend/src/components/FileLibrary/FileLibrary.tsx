@@ -35,7 +35,7 @@ const FileLibrary: React.FC = () => {
       </Box>
       <Grid container spacing={2}>
         {resources.map((resource) => (
-          <Grid xs={12} sm={6} md={4} key={resource.id} component="div">
+          <Grid xs={12} sm={6} md={4} key={resource.id}>
             <ResourceCard resource={resource} onResourceDeleted={fetchResources} />
           </Grid>
         ))}
