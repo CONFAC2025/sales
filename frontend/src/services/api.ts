@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+console.log("VITE_API_BASE_URL at runtime:", baseURL);
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: baseURL || 'https://sales-ofg0.onrender.com', // 디버깅을 위한 임시 fallback
 });
 
 // Add a request interceptor
