@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, IconButton, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, IconButton, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, FormControl, InputLabel, Select, MenuItem, useTheme, useMediaQuery, Card, CardContent, CardActions, Link } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -37,6 +37,8 @@ const translatePotentialToKorean = (potential: PotentialLevel) => {
 
 const CustomersPage: React.FC = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { user: currentUser, isAuthenticated } = useAuth();
   const { sendSystemMessageToUser } = useChat();
   const { notifications, markAsReadByLink } = useNotifications();
@@ -62,7 +64,6 @@ const CustomersPage: React.FC = () => {
       .filter(n => !n.isRead && typeof n.link === 'string' && n.link.startsWith('/customers/'))
       .forEach(n => {
         if (n.link) {
-          // Keep only the latest notification message for each link
           if (!updateMap.has(n.link)) {
             updateMap.set(n.link, n.message);
           }
@@ -81,7 +82,6 @@ const CustomersPage: React.FC = () => {
       setCustomers(fetchedCustomers);
       setUsers(fetchedUsers);
     } catch (err) {
-      
       console.error(err);
     }
   };
@@ -100,7 +100,6 @@ const CustomersPage: React.FC = () => {
       const fetchedCustomers = await getCustomers(filters);
       setCustomers(fetchedCustomers);
     } catch (err) {
-      
       console.error(err);
     }
   };
@@ -141,7 +140,6 @@ const CustomersPage: React.FC = () => {
         await deleteCustomer(selectedCustomerId);
         fetchCustomers();
       } catch (err) {
-        
       } finally {
         setOpenDeleteDialog(false);
         setSelectedCustomerId(null);
@@ -173,6 +171,108 @@ const CustomersPage: React.FC = () => {
   };
 
   const canSendMessage = currentUser?.userType === 'ADMIN_STAFF' || currentUser?.userType === 'DEPARTMENT_MANAGER' || currentUser?.userType === 'TEAM_LEADER';
+
+  const DesktopView = () => (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="customer table">
+        <TableHead>
+          <TableRow>
+            <TableCell>이름</TableCell>
+            <TableCell>연락처</TableCell>
+            <TableCell>관심 물건</TableCell>
+            <TableCell>유입 경로</TableCell>
+            <TableCell>성향</TableCell>
+            <TableCell>상태</TableCell>
+            <TableCell>등록일</TableCell>
+            <TableCell>등록자</TableCell>
+            <TableCell align="right">작업</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {customers && customers.map((customer) => (
+            <TableRow 
+              key={customer.id}
+              hover
+              sx={{ cursor: 'pointer' }}
+              onClick={() => handleRowClick(customer)}
+            >
+              <TableCell>
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography component="span">{customer.name}</Typography>
+                  {unreadCustomerUpdates.has(`/customers/${customer.id}`) && (
+                    <Typography variant="caption" color="secondary.main">
+                      {unreadCustomerUpdates.get(`/customers/${customer.id}`)}
+                    </Typography>
+                  )}
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Link href={`tel:${customer.phone}`} onClick={(e) => e.stopPropagation()}>{customer.phone}</Link>
+              </TableCell>
+              <TableCell>{customer.interestedProperty || '-'}</TableCell>
+              <TableCell>{customer.source || '-'}</TableCell>
+              <TableCell>{getPotentialChip(customer.potential)}</TableCell>
+              <TableCell>{getStatusChip(customer.status)}</TableCell>
+              <TableCell>{new Date(customer.createdAt).toLocaleDateString()}</TableCell>
+              <TableCell>{customer.registeredBy?.name}</TableCell>
+              <TableCell align="right" onClick={(e) => e.stopPropagation()}>
+                {canSendMessage && customer.registeredById && customer.registeredById !== currentUser?.id && (
+                  <IconButton onClick={() => handleSendMessage(customer)} size="small">
+                    <SendIcon />
+                  </IconButton>
+                )}
+                <IconButton onClick={() => handleEdit(customer.id)} size="small"><EditIcon /></IconButton>
+                <IconButton onClick={() => handleDelete(customer.id)} size="small"><DeleteIcon /></IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
+  const MobileView = () => (
+    <Box>
+      {customers && customers.map((customer) => (
+        <Card key={customer.id} sx={{ mb: 2 }} onClick={() => handleRowClick(customer)}>
+          <CardContent>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <Box>
+                <Typography variant="h6">{customer.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  <Link href={`tel:${customer.phone}`} onClick={(e) => e.stopPropagation()}>{customer.phone}</Link>
+                </Typography>
+              </Box>
+              {getStatusChip(customer.status)}
+            </Box>
+            {unreadCustomerUpdates.has(`/customers/${customer.id}`) && (
+              <Typography variant="caption" color="secondary.main" sx={{ display: 'block', mt: 1}}>
+                {unreadCustomerUpdates.get(`/customers/${customer.id}`)}
+              </Typography>
+            )}
+            <Box sx={{ mt: 2, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+              <Typography variant="body2"><b>관심물건:</b> {customer.interestedProperty || '-'}</Typography>
+              <Typography variant="body2"><b>유입경로:</b> {customer.source || '-'}</Typography>
+              <Typography variant="body2"><b>성향:</b> {getPotentialChip(customer.potential)}</Typography>
+              <Typography variant="body2"><b>등록자:</b> {customer.registeredBy?.name}</Typography>
+            </Box>
+            <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
+              등록일: {new Date(customer.createdAt).toLocaleDateString()}
+            </Typography>
+          </CardContent>
+          <CardActions sx={{ justifyContent: 'flex-end' }}>
+            {canSendMessage && customer.registeredById && customer.registeredById !== currentUser?.id && (
+              <IconButton onClick={(e) => {e.stopPropagation(); handleSendMessage(customer)}} size="small">
+                <SendIcon />
+              </IconButton>
+            )}
+            <IconButton onClick={(e) => {e.stopPropagation(); handleEdit(customer.id)}} size="small"><EditIcon /></IconButton>
+            <IconButton onClick={(e) => {e.stopPropagation(); handleDelete(customer.id)}} size="small"><DeleteIcon /></IconButton>
+          </CardActions>
+        </Card>
+      ))}
+    </Box>
+  );
 
   return (
     <Box>
@@ -222,60 +322,7 @@ const CustomersPage: React.FC = () => {
         </Box>
       </Paper>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="customer table">
-          <TableHead>
-            <TableRow>
-              <TableCell>이름</TableCell>
-              <TableCell>연락처</TableCell>
-              <TableCell>관심 물건</TableCell>
-              <TableCell>유입 경로</TableCell>
-              <TableCell>성향</TableCell>
-              <TableCell>상태</TableCell>
-              <TableCell>등록일</TableCell>
-              <TableCell>등록자</TableCell>
-              <TableCell align="right">작업</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {customers && customers.map((customer) => (
-              <TableRow 
-                key={customer.id}
-                hover
-                sx={{ cursor: 'pointer' }}
-                onClick={() => handleRowClick(customer)}
-              >
-                <TableCell>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography component="span">{customer.name}</Typography>
-                    {unreadCustomerUpdates.has(`/customers/${customer.id}`) && (
-                      <Typography variant="caption" color="secondary.main">
-                        {unreadCustomerUpdates.get(`/customers/${customer.id}`)}
-                      </Typography>
-                    )}
-                  </Box>
-                </TableCell>
-                <TableCell>{customer.phone}</TableCell>
-                <TableCell>{customer.interestedProperty || '-'}</TableCell>
-                <TableCell>{customer.source || '-'}</TableCell>
-                <TableCell>{getPotentialChip(customer.potential)}</TableCell>
-                <TableCell>{getStatusChip(customer.status)}</TableCell>
-                <TableCell>{new Date(customer.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell>{customer.registeredBy?.name}</TableCell>
-                <TableCell align="right" onClick={(e) => e.stopPropagation()}>
-                  {canSendMessage && customer.registeredById && customer.registeredById !== currentUser?.id && (
-                    <IconButton onClick={() => handleSendMessage(customer)} size="small">
-                      <SendIcon />
-                    </IconButton>
-                  )}
-                  <IconButton onClick={() => handleEdit(customer.id)} size="small"><EditIcon /></IconButton>
-                  <IconButton onClick={() => handleDelete(customer.id)} size="small"><DeleteIcon /></IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {isMobile ? <MobileView /> : <DesktopView />}
 
       {selectedCustomer && (
         <ActivityLogDialog
