@@ -1,10 +1,10 @@
 import api from './api';
-import type { UserResponse } from './adminService';
+import type { UserForAdminResponse } from './adminService';
 import type { ChatRoom, ChatMessage } from '../types/chat'; // Import from new types file
 
 // API Calls
 
-export const getSubordinates = async (): Promise<UserResponse[]> => {
+export const getSubordinates = async (): Promise<UserForAdminResponse[]> => {
   const response = await api.get('/chat/subordinates');
   return response.data.data;
 };
@@ -19,7 +19,7 @@ export const getMyChatRooms = async (): Promise<ChatRoom[]> => {
   return response.data.data;
 };
 
-export const getChatTargets = async (): Promise<UserResponse[]> => {
+export const getChatTargets = async (): Promise<UserForAdminResponse[]> => {
   const response = await api.get('/chat/targets');
   return response.data.data;
 };

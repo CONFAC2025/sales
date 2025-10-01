@@ -153,7 +153,7 @@ const AdminPage: React.FC = () => {
   };
 
   const getStatusChip = (status: UserStatus) => {
-    const statusMap = {
+    const statusMap: Record<UserStatus, React.ReactElement> = {
       APPROVED: <Chip label="승인" color="success" size="small" />,
       PENDING: <Chip label="대기" color="warning" size="small" />,
       REJECTED: <Chip label="거절" color="error" size="small" />,

@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getNotifications, markAsRead } from '../services/notificationService';
+import { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
+
 import type { Notification } from '../types/notification';
 
 // Dummy emitter for now
 export const eventEmitter = {
-  subscribe: () => {},
-  unsubscribe: () => {},
+  subscribe: (_event: string, _callback: (data: any) => void) => {},
+  unsubscribe: (_event: string, _callback: (data: any) => void) => {},
 };
 
 interface NotificationContextType {
@@ -18,13 +19,13 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const notifications: Notification[] = [];
+  const unreadCount = 0;
 
   // Temporarily disabled WebSocket logic to isolate chat issues
 
-  const markNotificationAsRead = async (notificationId: string) => {};
-  const markAsReadByLink = async (link: string) => {};
+  const markNotificationAsRead = async (_notificationId: string) => {};
+  const markAsReadByLink = async (_link: string) => {};
 
   return (
     <NotificationContext.Provider value={{ notifications, unreadCount, markNotificationAsRead, markAsReadByLink }}>

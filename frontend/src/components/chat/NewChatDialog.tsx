@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { getChatTargets } from '../../services/chatService';
 import { useChat } from '../../contexts/ChatContext';
-import type { UserResponse } from '../../services/adminService';
+import type { UserForAdminResponse } from '../../services/adminService';
 
 interface NewChatDialogProps {
   open: boolean;

@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import type { ReactNode } from 'react';
+
 import { useAuth } from './AuthContext';
 import type { ChatRoom, ChatMessage } from '../types/chat';
 import { getMyChatRooms, getMessagesForRoom, findOrCreateOneOnOneChat, deleteChatRoom as apiDeleteChatRoom, deleteMessage as apiDeleteMessage, sendMessage as apiSendMessage } from '../services/chatService';
@@ -18,6 +20,8 @@ interface ChatContextType {
   deleteRoom: (roomId: string) => Promise<boolean>;
   totalUnreadCount: number;
   unreadCounts: { [roomId: string]: number };
+  addRoom: (newRoom: ChatRoom) => void;
+  deleteMessage: (messageId: string) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -128,6 +132,23 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const deleteMessage = async (messageId: string) => {
+    try {
+      await apiDeleteMessage(messageId);
+      // Remove the message from the state
+      setMessages(prev => {
+        const newMessages = { ...prev };
+        for (const roomId in newMessages) {
+          newMessages[roomId] = newMessages[roomId].filter(m => m.id !== messageId);
+        }
+        return newMessages;
+      });
+    } catch (error) {
+      toast.error('메시지 삭제에 실패했습니다.');
+      console.error('Failed to delete message', error);
+    }
+  };
+
   const getRoomDisplayName = (room: ChatRoom) => {
     if (!room.members) return 'Chat';
     if (room.isGroup) return room.name || 'Group Chat';
@@ -138,7 +159,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const totalUnreadCount = Object.values(unreadCounts).filter(count => count > 0).length;
 
   return (
-    <ChatContext.Provider value={{ rooms, messages, sendMessage, openRoom, closeRoom, openRoomIds, startOneOnOneChat, getRoomDisplayName, deleteRoom, totalUnreadCount, unreadCounts }}>
+    <ChatContext.Provider value={{ rooms, messages, sendMessage, openRoom, closeRoom, openRoomIds, startOneOnOneChat, getRoomDisplayName, deleteRoom, totalUnreadCount, unreadCounts, addRoom, deleteMessage }}>
       {children}
     </ChatContext.Provider>
   );

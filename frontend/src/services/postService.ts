@@ -9,6 +9,8 @@ export interface Post {
   author: { name: string };
   comments: Comment[];
   _count: { comments: number };
+  fileType?: string;
+  fileUrl?: string;
 }
 
 export interface Comment {
@@ -28,7 +30,7 @@ export const getPostById = async (postId: string): Promise<Post> => {
   return response.data.data;
 };
 
-export const createPost = async (data: { title: string; content: string }): Promise<Post> => {
+export const createPost = async (data: { title: string; content: string; fileUrl?: string; fileType?: string; }): Promise<Post> => {
   const response = await api.post('/posts', data);
   return response.data.data;
 };

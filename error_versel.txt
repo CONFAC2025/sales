@@ -1,0 +1,159 @@
+15:00:09.093 Running build in Washington, D.C., USA (East) – iad1
+15:00:09.094 Build machine configuration: 2 cores, 8 GB
+15:00:09.126 Cloning github.com/CONFAC2025/sales (Branch: main, Commit: 8481197)
+15:00:09.269 Previous build caches not available
+15:00:10.377 Cloning completed: 1.251s
+15:00:10.761 Running "vercel build"
+15:00:11.153 Vercel CLI 48.1.6
+15:00:11.752 Installing dependencies...
+15:00:24.486 
+15:00:24.486 added 317 packages in 12s
+15:00:24.486 
+15:00:24.487 68 packages are looking for funding
+15:00:24.487   run `npm fund` for details
+15:00:24.598 Running "npm run build"
+15:00:25.557 
+15:00:25.557 > frontend@0.0.0 build
+15:00:25.557 > tsc -b && vite build
+15:00:25.558 
+15:00:31.490 src/App.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+15:00:31.491 src/components/BulletinBoard/NewPostDialog.tsx(11,3): error TS6133: 'IconButton' is declared but its value is never read.
+15:00:31.491 src/components/BulletinBoard/NewPostDialog.tsx(55,9): error TS2353: Object literal may only specify known properties, and 'fileUrl' does not exist in type '{ title: string; content: string; }'.
+15:00:31.492 src/components/BulletinBoard/PostCard.tsx(16,1): error TS6133: 'ExpandMoreIcon' is declared but its value is never read.
+15:00:31.492 src/components/BulletinBoard/PostCard.tsx(26,7): error TS6133: 'ExpandMore' is declared but its value is never read.
+15:00:31.492 src/components/BulletinBoard/PostCard.tsx(91,17): error TS2339: Property 'fileUrl' does not exist on type 'Post'.
+15:00:31.492 src/components/BulletinBoard/PostCard.tsx(93,21): error TS2339: Property 'fileType' does not exist on type 'Post'.
+15:00:31.492 src/components/BulletinBoard/PostCard.tsx(95,53): error TS2339: Property 'fileUrl' does not exist on type 'Post'.
+15:00:31.493 src/components/BulletinBoard/PostCard.tsx(102,54): error TS2339: Property 'fileUrl' does not exist on type 'Post'.
+15:00:31.493 src/components/CustomerDetailsModal.tsx(7,3): error TS6133: 'Box' is declared but its value is never read.
+15:00:31.493 src/components/CustomerDetailsModal.tsx(22,63): error TS6133: 'Legend' is declared but its value is never read.
+15:00:31.493 src/components/CustomerDetailsModal.tsx(51,14): error TS2769: No overload matches this call.
+15:00:31.494   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+15:00:31.494     Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.494   Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+15:00:31.494     Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.495       Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.495 src/components/CustomerDetailsModal.tsx(63,14): error TS2769: No overload matches this call.
+15:00:31.495   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+15:00:31.495     Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.496   Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+15:00:31.497     Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.497       Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.497 src/components/CustomerDetailsModal.tsx(75,14): error TS2769: No overload matches this call.
+15:00:31.498   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+15:00:31.498     Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.498   Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+15:00:31.498     Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.499       Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.500 src/components/FileLibrary/FileLibrary.tsx(38,12): error TS2769: No overload matches this call.
+15:00:31.500   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+15:00:31.500     Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; key: string; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.500   Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+15:00:31.500     Type '{ children: Element; item: true; xs: number; sm: number; md: number; key: string; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.500       Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.500 src/components/FileLibrary/ResourceCard.tsx(2,74): error TS6133: 'Box' is declared but its value is never read.
+15:00:31.500 src/components/Layout.tsx(133,28): error TS6133: 'event' is declared but its value is never read.
+15:00:31.500 src/components/Layout.tsx(270,20): error TS2769: No overload matches this call.
+15:00:31.501   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & ListItemOwnProps & CommonProps & Omit<any, "children" | ... 15 more ... | "secondaryAction">): Element | null', gave the following error.
+15:00:31.501     Property 'component' is missing in type '{ children: Element[]; button: true; onClick: () => void; sx: { backgroundColor: "transparent" | "#f5f5f5"; alignItems: "flex-start"; }; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.501   Overload 2 of 2, '(props: DefaultComponentProps<ListItemTypeMap<{}, "li">>): Element | null', gave the following error.
+15:00:31.501     Type '{ children: Element[]; button: true; onClick: () => void; sx: { backgroundColor: "transparent" | "#f5f5f5"; alignItems: "flex-start"; }; }' is not assignable to type 'IntrinsicAttributes & ListItemOwnProps & CommonProps & Omit<DetailedHTMLProps<LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>, "children" | ... 15 more ... | "secondaryAction">'.
+15:00:31.501       Property 'button' does not exist on type 'IntrinsicAttributes & ListItemOwnProps & CommonProps & Omit<DetailedHTMLProps<LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>, "children" | ... 15 more ... | "secondaryAction">'.
+15:00:31.501 src/components/ManagerDialog.tsx(39,22): error TS6133: 'event' is declared but its value is never read.
+15:00:31.501 src/components/UserForm.tsx(4,15): error TS2459: Module '"../services/adminService"' declares 'CreateUserPayload' locally, but it is not exported.
+15:00:31.501 src/components/UserForm.tsx(7,26): error TS2307: Cannot find module '@prisma/client' or its corresponding type declarations.
+15:00:31.501 src/components/UserForm.tsx(43,17): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+15:00:31.501 src/components/UserForm.tsx(49,19): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+15:00:31.502 src/components/UserForm.tsx(51,19): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+15:00:31.502 src/components/UserForm.tsx(91,18): error TS2769: No overload matches this call.
+15:00:31.502   Overload 2 of 3, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & MenuItemOwnProps & Omit<ButtonBaseOwnProps, "classes"> & CommonProps & Omit<...>): Element | null', gave the following error.
+15:00:31.502     Type 'unknown' is not assignable to type 'Key | null | undefined'.
+15:00:31.502   Overload 2 of 3, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & MenuItemOwnProps & Omit<ButtonBaseOwnProps, "classes"> & CommonProps & Omit<...>): Element | null', gave the following error.
+15:00:31.502     Type 'unknown' is not assignable to type 'ReactNode'.
+15:00:31.502 src/components/chat/CreateChatRoomDialog.tsx(13,3): error TS6133: 'ListItemIcon' is declared but its value is never read.
+15:00:31.502 src/components/chat/CreateChatRoomDialog.tsx(16,15): error TS2305: Module '"../../services/adminService"' has no exported member 'UserResponse'.
+15:00:31.502 src/components/chat/CreateChatRoomDialog.tsx(29,11): error TS2339: Property 'addRoom' does not exist on type 'ChatContextType'.
+15:00:31.502 src/components/chat/MessageView.tsx(29,61): error TS2339: Property 'deleteMessage' does not exist on type 'ChatContextType'.
+15:00:31.502 src/components/chat/NewChatDialog.tsx(16,15): error TS2305: Module '"../../services/adminService"' has no exported member 'UserResponse'.
+15:00:31.503 src/contexts/AuthContext.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+15:00:31.503 src/contexts/AuthContext.tsx(1,54): error TS6133: 'useEffect' is declared but its value is never read.
+15:00:31.503 src/contexts/AuthContext.tsx(1,65): error TS1484: 'ReactNode' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+15:00:31.503 src/contexts/ChatContext.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+15:00:31.503 src/contexts/ChatContext.tsx(1,65): error TS1484: 'ReactNode' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+15:00:31.503 src/contexts/ChatContext.tsx(4,126): error TS6133: 'apiDeleteMessage' is declared but its value is never read.
+15:00:31.503 src/contexts/ChatContext.tsx(71,30): error TS2554: Expected 0 arguments, but got 2.
+15:00:31.504 src/contexts/ChatContext.tsx(72,30): error TS2554: Expected 0 arguments, but got 2.
+15:00:31.504 src/contexts/ChatContext.tsx(73,30): error TS2554: Expected 0 arguments, but got 2.
+15:00:31.504 src/contexts/ChatContext.tsx(76,34): error TS2554: Expected 0 arguments, but got 2.
+15:00:31.504 src/contexts/ChatContext.tsx(77,34): error TS2554: Expected 0 arguments, but got 2.
+15:00:31.504 src/contexts/ChatContext.tsx(78,34): error TS2554: Expected 0 arguments, but got 2.
+15:00:31.504 src/contexts/NotificationContext.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+15:00:31.504 src/contexts/NotificationContext.tsx(1,54): error TS6133: 'useEffect' is declared but its value is never read.
+15:00:31.504 src/contexts/NotificationContext.tsx(1,65): error TS1484: 'ReactNode' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+15:00:31.504 src/contexts/NotificationContext.tsx(2,1): error TS6192: All imports in import declaration are unused.
+15:00:31.504 src/contexts/NotificationContext.tsx(21,25): error TS6133: 'setNotifications' is declared but its value is never read.
+15:00:31.504 src/contexts/NotificationContext.tsx(22,23): error TS6133: 'setUnreadCount' is declared but its value is never read.
+15:00:31.505 src/contexts/NotificationContext.tsx(26,41): error TS6133: 'notificationId' is declared but its value is never read.
+15:00:31.505 src/contexts/NotificationContext.tsx(27,35): error TS6133: 'link' is declared but its value is never read.
+15:00:31.505 src/contexts/SiteSettingsContext.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+15:00:31.505 src/contexts/SiteSettingsContext.tsx(1,65): error TS1484: 'ReactNode' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+15:00:31.505 src/pages/AdminPage.tsx(16,3): error TS6133: 'InputLabel' is declared but its value is never read.
+15:00:31.505 src/pages/AdminPage.tsx(24,1): error TS6133: 'SelectChangeEvent' is declared but its value is never read.
+15:00:31.505 src/pages/AdminPage.tsx(26,1): error TS6133: 'SupervisorAccountIcon' is declared but its value is never read.
+15:00:31.505 src/pages/AdminPage.tsx(30,38): error TS2307: Cannot find module '@prisma/client' or its corresponding type declarations.
+15:00:31.505 src/pages/AdminPage.tsx(45,10): error TS6133: 'error' is declared but its value is never read.
+15:00:31.505 src/pages/AdminPage.tsx(50,34): error TS6133: 'setSelectedUserForManager' is declared but its value is never read.
+15:00:31.505 src/pages/AdminPage.tsx(162,12): error TS7053: Element implicitly has an 'any' type because expression of type 'UserStatus' can't be used to index type '{ APPROVED: Element; PENDING: Element; REJECTED: Element; SUSPENDED: Element; }'.
+15:00:31.505 src/pages/AdminPage.tsx(254,35): error TS2769: No overload matches this call.
+15:00:31.505   Overload 2 of 3, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & MenuItemOwnProps & Omit<ButtonBaseOwnProps, "classes"> & CommonProps & Omit<...>): Element | null', gave the following error.
+15:00:31.505     Type 'unknown' is not assignable to type 'Key | null | undefined'.
+15:00:31.505 src/pages/AdminPage.tsx(255,46): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '"ADMIN_STAFF" | "MIDDLE_MANAGER" | "GENERAL_HQ_MANAGER" | "DEPARTMENT_MANAGER" | "TEAM_LEADER" | "SALES_STAFF" | "REAL_ESTATE" | "PARTNER_STAFF"'.
+15:00:31.505 src/pages/AdminPage.tsx(264,35): error TS2339: Property 'departmentId' does not exist on type 'UserForAdminResponse'.
+15:00:31.506 src/pages/AdminPage.tsx(279,35): error TS2339: Property 'teamId' does not exist on type 'UserForAdminResponse'.
+15:00:31.506 src/pages/AdminPage.tsx(280,70): error TS2339: Property 'departmentId' does not exist on type 'UserForAdminResponse'.
+15:00:31.506 src/pages/AdminPage.tsx(281,39): error TS2339: Property 'departmentId' does not exist on type 'UserForAdminResponse'.
+15:00:31.506 src/pages/AdminPage.tsx(284,72): error TS2339: Property 'departmentId' does not exist on type 'UserForAdminResponse'.
+15:00:31.506 src/pages/CreateCustomerPage.tsx(30,23): error TS2322: Type '(data: CreateCustomerDto) => Promise<void>' is not assignable to type '(data: CreateCustomerDto | Partial<CreateCustomerDto>) => void'.
+15:00:31.506   Types of parameters 'data' and 'data' are incompatible.
+15:00:31.506     Type 'CreateCustomerDto | Partial<CreateCustomerDto>' is not assignable to type 'CreateCustomerDto'.
+15:00:31.506       Type 'Partial<CreateCustomerDto>' is not assignable to type 'CreateCustomerDto'.
+15:00:31.506         Types of property 'source' are incompatible.
+15:00:31.506           Type 'string | null | undefined' is not assignable to type 'string | null'.
+15:00:31.506             Type 'undefined' is not assignable to type 'string | null'.
+15:00:31.506 src/pages/CustomersPage.tsx(2,24): error TS6133: 'Grid' is declared but its value is never read.
+15:00:31.506 src/pages/CustomersPage.tsx(3,1): error TS6133: 'SelectChangeEvent' is declared but its value is never read.
+15:00:31.506 src/pages/CustomersPage.tsx(10,32): error TS2307: Cannot find module '@prisma/client' or its corresponding type declarations.
+15:00:31.506 src/pages/CustomersPage.tsx(41,11): error TS2339: Property 'sendSystemMessageToUser' does not exist on type 'ChatContextType'.
+15:00:31.506 src/pages/CustomersPage.tsx(45,10): error TS6133: 'error' is declared but its value is never read.
+15:00:31.506 src/pages/CustomersPage.tsx(208,67): error TS2769: No overload matches this call.
+15:00:31.507   Overload 2 of 3, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & MenuItemOwnProps & Omit<ButtonBaseOwnProps, "classes"> & CommonProps & Omit<...>): Element | null', gave the following error.
+15:00:31.507     Type 'unknown' is not assignable to type 'Key | null | undefined'.
+15:00:31.507 src/pages/DashboardPage.tsx(8,25): error TS2305: Module '"../types/customer"' has no exported member 'CustomerStatus'.
+15:00:31.507 src/pages/DashboardPage.tsx(8,25): error TS6196: 'CustomerStatus' is declared but never used.
+15:00:31.507 src/pages/DashboardPage.tsx(36,10): error TS6133: 'loading' is declared but its value is never read.
+15:00:31.507 src/pages/LoginPage.tsx(80,14): error TS2769: No overload matches this call.
+15:00:31.507   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+15:00:31.507     Property 'component' is missing in type '{ children: Element; item: true; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.507   Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+15:00:31.507     Type '{ children: Element; item: true; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.507       Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.507 src/pages/LoginPage.tsx(85,14): error TS2769: No overload matches this call.
+15:00:31.507   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+15:00:31.508     Property 'component' is missing in type '{ children: Element; item: true; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.508   Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+15:00:31.508     Type '{ children: Element; item: true; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.508       Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.508 src/pages/OrganizationPage.tsx(18,33): error TS2459: Module '"../services/organizationService"' declares 'User' locally, but it is not exported.
+15:00:31.508 src/pages/OrganizationPage.tsx(19,28): error TS2307: Cannot find module '@prisma/client' or its corresponding type declarations.
+15:00:31.508 src/pages/OrganizationPage.tsx(56,10): error TS7053: Element implicitly has an 'any' type because expression of type 'UserStatus' can't be used to index type '{ APPROVED: Element; PENDING: Element; REJECTED: Element; SUSPENDED: Element; }'.
+15:00:31.508 src/pages/OrganizationPage.tsx(85,25): error TS6133: 'event' is declared but its value is never read.
+15:00:31.508 src/pages/RegisterPage.tsx(152,14): error TS2769: No overload matches this call.
+15:00:31.508   Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+15:00:31.508     Property 'component' is missing in type '{ children: Element; item: true; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+15:00:31.508   Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+15:00:31.508     Type '{ children: Element; item: true; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.508       Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+15:00:31.509 src/services/adminService.ts(2,43): error TS2307: Cannot find module '@prisma/client' or its corresponding type declarations.
+15:00:31.509 src/services/chatService.ts(2,15): error TS2305: Module '"./adminService"' has no exported member 'UserResponse'.
+15:00:31.509 src/types/admin.ts(1,43): error TS2307: Cannot find module '@prisma/client' or its corresponding type declarations.
+15:00:32.163 Error: Command "npm run build" exited with 2

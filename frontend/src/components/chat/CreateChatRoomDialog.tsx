@@ -13,7 +13,7 @@ import {
   ListItemIcon,
 } from '@mui/material';
 import { getSubordinates, createChatRoom } from '../../services/chatService';
-import type { UserResponse } from '../../services/adminService';
+import type { UserForAdminResponse } from '../../services/adminService';
 import { useChat } from '../../contexts/ChatContext';
 import toast from 'react-hot-toast';
 

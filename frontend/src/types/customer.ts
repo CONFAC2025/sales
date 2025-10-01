@@ -1,10 +1,12 @@
 export type PotentialLevel = 'HIGH' | 'MEDIUM' | 'LOW';
 
+export type CustomerStatus = 'REGISTERED' | 'VISITED' | 'CONSULTED' | 'CONTRACTED' | 'CANCELLED';
+
 export interface Customer {
   id: string;
   name: string;
   phone: string;
-  status: 'REGISTERED' | 'VISITED' | 'CONSULTED' | 'CONTRACTED' | 'CANCELLED';
+  status: CustomerStatus;
   notes: string | null;
   interestedProperty: string | null;
   potential: PotentialLevel | null;

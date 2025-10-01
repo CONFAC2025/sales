@@ -40,15 +40,15 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, onCancel }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev: CreateUserPayload) => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (e: SelectChangeEvent<any>) => {
     const { name, value } = e.target;
     if (name === 'departmentId') {
-      setFormData(prev => ({ ...prev, departmentId: value, teamId: '' }));
+      setFormData((prev: CreateUserPayload) => ({ ...prev, departmentId: value, teamId: '' }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev: CreateUserPayload) => ({ ...prev, [name]: value }));
     }
   };
 

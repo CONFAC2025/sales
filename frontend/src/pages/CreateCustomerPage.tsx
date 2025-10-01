@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 const CreateCustomerPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async (data: CreateCustomerDto) => {
+  const handleCreateCustomer = async (data: CreateCustomerDto) => {
     try {
       await createCustomer(data);
       toast.success('신규 고객이 등록되었습니다.');
@@ -20,6 +20,11 @@ const CreateCustomerPage: React.FC = () => {
       toast.error(`고객 등록 실패: ${error.response?.data?.message || error.message}`);
     }
   };
+
+  const handleSubmit = (data: CreateCustomerDto | Partial<CreateCustomerDto>) => {
+    // The form is for creation, so we assert that the data is a full CreateCustomerDto.
+    handleCreateCustomer(data as CreateCustomerDto);
+  }
 
   return (
     <Container maxWidth="sm">

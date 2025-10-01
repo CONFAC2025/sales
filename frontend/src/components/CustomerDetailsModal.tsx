@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   Typography,
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -19,7 +17,7 @@ import {
 } from '@mui/material';
 import { getCustomersByRegistrant } from '../services/adminService';
 import type { CustomerDetailsResponse } from '../services/adminService';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface CustomerDetailsModalProps {
   open: boolean;
@@ -48,7 +46,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ open, onClo
         {loading && <Typography>Loading...</Typography>}
         {data && (
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} md={6}>
+            <Grid xs={12} md={6} component="div">
               <Typography variant="h6" gutterBottom>상태별 통계</Typography>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data.stats.byStatus}>
@@ -60,7 +58,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ open, onClo
                 </BarChart>
               </ResponsiveContainer>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid xs={12} md={6} component="div">
               <Typography variant="h6" gutterBottom>유입 경로별 통계</Typography>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data.stats.bySource}>
@@ -72,7 +70,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ open, onClo
                 </BarChart>
               </ResponsiveContainer>
             </Grid>
-            <Grid item xs={12}>
+            <Grid xs={12} component="div">
               <Typography variant="h6" gutterBottom>고객 목록</Typography>
               <TableContainer component={Paper}>
                 <Table size="small">
