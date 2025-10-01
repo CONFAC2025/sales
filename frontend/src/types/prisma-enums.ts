@@ -1,11 +1,11 @@
-export enum UserStatus {
+export const enum UserStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED',
   SUSPENDED = 'SUSPENDED',
 }
 
-export enum UserType {
+export const enum UserType {
   ADMIN_STAFF = 'ADMIN_STAFF',
   MIDDLE_MANAGER = 'MIDDLE_MANAGER',
   GENERAL_HQ_MANAGER = 'GENERAL_HQ_MANAGER',
@@ -16,7 +16,7 @@ export enum UserType {
   PARTNER_STAFF = 'PARTNER_STAFF',
 }
 
-export enum CustomerStatus {
+export const enum CustomerStatus {
   REGISTERED = 'REGISTERED',
   VISITED = 'VISITED',
   CONSULTED = 'CONSULTED',
