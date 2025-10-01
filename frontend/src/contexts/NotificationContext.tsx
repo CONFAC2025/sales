@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useRef, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useCallback } from 'react';
+import type { ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import type { Notification } from '../types/notification';
 
@@ -42,7 +43,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = React.useState(0);
   const socketRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const reconnectTimeoutRef = useRef<number | null>(null);
 
   const addNotification = useCallback((newNotification: Notification) => {
     setNotifications(prev => [newNotification, ...prev.slice(0, 99)]); // Keep last 100
