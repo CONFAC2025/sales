@@ -4,7 +4,7 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 import type { CreateUserPayload } from '../types/admin';
 import type { Department, Team } from '../services/organizationService';
 import { getDepartments, getTeams } from '../services/organizationService';
-import { type UserType, UserTypeOptions } from '../types/prisma-enums';
+import { UserTypeOptions } from '../types/prisma-enums';
 import toast from 'react-hot-toast';
 
 interface UserFormProps {
