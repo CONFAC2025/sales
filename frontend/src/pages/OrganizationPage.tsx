@@ -17,7 +17,7 @@ import {
 import { getOrganizationTree } from '../services/organizationService';
 import type { Department, Team } from '../services/organizationService';
 import type { User } from '../types/user';
-import { UserStatus } from '@prisma/client';
+import { UserStatus } from '../types/prisma-enums';
 import { translateUserType } from '../utils/user';
 import toast from 'react-hot-toast';
 

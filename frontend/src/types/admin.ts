@@ -1,4 +1,4 @@
-import type { UserStatus, UserType } from '@prisma/client';
+import { UserStatus, UserType } from './prisma-enums';
 
 export interface UserForAdminResponse {
   id: string;

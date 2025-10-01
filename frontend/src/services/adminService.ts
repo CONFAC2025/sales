@@ -1,5 +1,5 @@
 import api from './api';
-import type { UserStatus, UserType } from '@prisma/client';
+import { UserStatus, UserType } from '../types/prisma-enums';
 import type { UserForAdminResponse, CreateUserPayload } from '../types/admin';
 
 // Type for the response of getCustomersByRegistrant

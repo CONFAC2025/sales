@@ -26,7 +26,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import { getUsersForAdmin, updateUserStatus, createUser, updateUserType, assignOrg, setUserManager } from '../services/adminService';
 import { getDepartments, getTeams } from '../services/organizationService';
 import type { Department, Team } from '../services/organizationService';
-import { UserStatus, UserType } from '@prisma/client';
+import { UserStatus, UserType } from '../types/prisma-enums';
 import type { UserForAdminResponse, CreateUserPayload } from '../types/admin';
 import UserForm from '../components/UserForm';
 import CustomerDetailsModal from '../components/CustomerDetailsModal';

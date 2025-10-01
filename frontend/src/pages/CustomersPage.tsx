@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { getCustomers, deleteCustomer } from '../services/customerService';
 import { getUsersForAdmin } from '../services/adminService';
 import type { UserForAdminResponse } from '../types/admin';
-import { CustomerStatus } from '@prisma/client';
+import { CustomerStatus } from '../types/prisma-enums';
 import type { Customer, PotentialLevel } from '../types/customer';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
