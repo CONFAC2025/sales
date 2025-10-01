@@ -4,7 +4,7 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 import type { CreateUserPayload } from '../types/admin';
 import type { Department, Team } from '../services/organizationService';
 import { getDepartments, getTeams } from '../services/organizationService';
-import { UserType } from '../types/prisma-enums';
+import { type UserType, UserTypeOptions } from '../types/prisma-enums';
 import toast from 'react-hot-toast';
 
 interface UserFormProps {
@@ -18,7 +18,7 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, onCancel }) => {
     name: '',
     phone: '',
     password: '',
-    userType: UserType.SALES_STAFF,
+    userType: 'SALES_STAFF',
     departmentId: '',
     teamId: '',
   });
@@ -87,7 +87,7 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, onCancel }) => {
           <FormControl fullWidth margin="dense">
             <InputLabel>사용자 유형</InputLabel>
             <Select name="userType" value={formData.userType} label="사용자 유형" onChange={handleSelectChange}>
-              {Object.values(UserType).map(type => (
+              {UserTypeOptions.map(type => (
                 <MenuItem key={type} value={type}>{type}</MenuItem>
               ))}
             </Select>

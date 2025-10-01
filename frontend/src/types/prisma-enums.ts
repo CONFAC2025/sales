@@ -1,25 +1,26 @@
-export const enum UserStatus {
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
-  SUSPENDED = 'SUSPENDED',
-}
+export type UserStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
+export const UserStatusOptions: UserStatus[] = ['PENDING', 'APPROVED', 'REJECTED', 'SUSPENDED'];
 
-export const enum UserType {
-  ADMIN_STAFF = 'ADMIN_STAFF',
-  MIDDLE_MANAGER = 'MIDDLE_MANAGER',
-  GENERAL_HQ_MANAGER = 'GENERAL_HQ_MANAGER',
-  DEPARTMENT_MANAGER = 'DEPARTMENT_MANAGER',
-  TEAM_LEADER = 'TEAM_LEADER',
-  SALES_STAFF = 'SALES_STAFF',
-  REAL_ESTATE = 'REAL_ESTATE',
-  PARTNER_STAFF = 'PARTNER_STAFF',
-}
+export type UserType = 
+  | 'ADMIN_STAFF'
+  | 'MIDDLE_MANAGER'
+  | 'GENERAL_HQ_MANAGER'
+  | 'DEPARTMENT_MANAGER'
+  | 'TEAM_LEADER'
+  | 'SALES_STAFF'
+  | 'REAL_ESTATE'
+  | 'PARTNER_STAFF';
 
-export const enum CustomerStatus {
-  REGISTERED = 'REGISTERED',
-  VISITED = 'VISITED',
-  CONSULTED = 'CONSULTED',
-  CONTRACTED = 'CONTRACTED',
-  CANCELLED = 'CANCELLED',
-}
+export const UserTypeOptions: UserType[] = [
+  'ADMIN_STAFF',
+  'MIDDLE_MANAGER',
+  'GENERAL_HQ_MANAGER',
+  'DEPARTMENT_MANAGER',
+  'TEAM_LEADER',
+  'SALES_STAFF',
+  'REAL_ESTATE',
+  'PARTNER_STAFF',
+];
+
+export type CustomerStatus = 'REGISTERED' | 'VISITED' | 'CONSULTED' | 'CONTRACTED' | 'CANCELLED';
+export const CustomerStatusOptions: CustomerStatus[] = ['REGISTERED', 'VISITED', 'CONSULTED', 'CONTRACTED', 'CANCELLED'];

@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { getCustomers, deleteCustomer } from '../services/customerService';
 import { getUsersForAdmin } from '../services/adminService';
 import type { UserForAdminResponse } from '../types/admin';
-import { CustomerStatus } from '../types/prisma-enums';
+import { type CustomerStatus, CustomerStatusOptions } from '../types/prisma-enums';
 import type { Customer, PotentialLevel } from '../types/customer';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -205,7 +205,7 @@ const CustomersPage: React.FC = () => {
               <InputLabel>상태</InputLabel>
               <Select value={filterStatus} label="상태" onChange={(e) => setFilterStatus(e.target.value as CustomerStatus)}>
                 <MenuItem value=""><em>전체</em></MenuItem>
-                {Object.values(CustomerStatus).map(s => <MenuItem key={s} value={s}>{translateStatusToKorean(s)}</MenuItem>)}
+                {CustomerStatusOptions.map(s => <MenuItem key={s} value={s}>{translateStatusToKorean(s)}</MenuItem>)}
               </Select>
             </FormControl>
             <FormControl sx={{ minWidth: 150 }} size="small">

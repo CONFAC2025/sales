@@ -26,7 +26,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import { getUsersForAdmin, updateUserStatus, createUser, updateUserType, assignOrg, setUserManager } from '../services/adminService';
 import { getDepartments, getTeams } from '../services/organizationService';
 import type { Department, Team } from '../services/organizationService';
-import { UserStatus, UserType } from '../types/prisma-enums';
+import { UserStatus, UserType, UserTypeOptions } from '../types/prisma-enums';
 import type { UserForAdminResponse, CreateUserPayload } from '../types/admin';
 import UserForm from '../components/UserForm';
 import CustomerDetailsModal from '../components/CustomerDetailsModal';
@@ -249,7 +249,7 @@ const AdminPage: React.FC = () => {
                       value={user.userType}
                       onChange={(e) => handleUserTypeChange(user.id, e.target.value as UserType)}
                     >
-                      {Object.values(UserType).map((type) => (
+                      {UserTypeOptions.map((type) => (
                         <MenuItem key={type} value={type}>
                           {translateUserType(type)}
                         </MenuItem>
