@@ -26,6 +26,8 @@ const server = Fastify({
 server.register(cors, {
   origin: "https://sales-wine-mu.vercel.app",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 });
 server.register(websocket);
 server.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } });
