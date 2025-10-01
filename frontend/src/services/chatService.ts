@@ -1,5 +1,5 @@
 import api from './api';
-import type { UserForAdminResponse } from './adminService';
+import type { UserForAdminResponse } from '../types/admin';
 import type { ChatRoom, ChatMessage } from '../types/chat'; // Import from new types file
 
 // API Calls

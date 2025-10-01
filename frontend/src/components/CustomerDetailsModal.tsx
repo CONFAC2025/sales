@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Grid,
+  GridLegacy as Grid,
   DialogActions,
   Button,
   Chip,

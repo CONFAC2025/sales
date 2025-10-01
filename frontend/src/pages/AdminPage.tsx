@@ -277,7 +277,7 @@ const AdminPage: React.FC = () => {
                   <FormControl size="small" sx={{ minWidth: 120 }}>
                     <Select
                       value={user.teamId || ''}
-                      onChange={(e) => handleOrgChange(user.id, user.departmentId, e.target.value)}
+                      onChange={(e) => handleOrgChange(user.id, user.departmentId || null, e.target.value)}
                       disabled={!user.departmentId}
                     >
                       <MenuItem value=""><em>미지정</em></MenuItem>

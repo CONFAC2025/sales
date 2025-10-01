@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button, MenuItem, Select, FormControl, InputLabel, GridLegacy as Grid } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material/Select';
-import type { CreateUserPayload } from '../services/adminService';
+import type { CreateUserPayload } from '../types/admin';
 import type { Department, Team } from '../services/organizationService';
 import { getDepartments, getTeams } from '../services/organizationService';
 import { UserType } from '@prisma/client';

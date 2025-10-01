@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Grid } from '@mui/material';
+import { Box, Typography, Button, GridLegacy as Grid } from '@mui/material';
 import { getResources } from '../../services/resourceService';
 import type { Resource } from '../../services/resourceService';
 import ResourceCard from './ResourceCard';
