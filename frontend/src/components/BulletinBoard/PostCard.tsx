@@ -4,7 +4,6 @@ import {
   CardContent,
   Typography,
   Collapse,
-  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -14,7 +13,7 @@ import {
   Chip,
 } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
+
 import type { Post, Comment } from '../../services/postService';
 import { createComment } from '../../services/postService';
 import toast from 'react-hot-toast';
