@@ -8,7 +8,7 @@ const connections = new Map<string, any>();
 export function startWebSocketServer(server: FastifyInstance) {
   server.get('/ws', { websocket: true }, (connection, req) => {
     // The connection object from fastify-websocket is the socket itself.
-    const socket = connection;
+    const socket = connection.socket;
 
     socket.on('message', async (message: Buffer) => {
       try {
