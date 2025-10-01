@@ -13,26 +13,13 @@ import {
   Button,
   Chip,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import { styled } from '@mui/material/styles';
 import type { Post, Comment } from '../../services/postService';
 import { createComment } from '../../services/postService';
 import toast from 'react-hot-toast';
 
-interface ExpandMoreProps {
-  expand: boolean;
-}
 
-const ExpandMore = styled((props: ExpandMoreProps & { children: React.ReactNode }) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
 
 interface PostCardProps {
   post: Post;

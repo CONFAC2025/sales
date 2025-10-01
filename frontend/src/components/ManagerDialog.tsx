@@ -36,7 +36,7 @@ const ManagerDialog: React.FC<ManagerDialogProps> = ({ open, onClose, users, cur
           options={potentialManagers}
           getOptionLabel={(option) => `${option.name} (${option.userId})`}
           value={selectedManager}
-          onChange={(event, newValue) => {
+          onChange={(_event, newValue) => {
             setSelectedManager(newValue);
           }}
           renderInput={(params) => <TextField {...params} label="상급자 선택" margin="normal" />}

@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getCustomers } from '../services/customerService';
 import { getUsersForAdmin } from '../services/adminService';
 import { updateSiteSettings } from '../services/siteSettingsService';
-import type { Customer, CustomerStatus } from '../types/customer';
+import type { Customer } from '../types/customer';
 import type { UserForAdminResponse } from '../types/admin';
 import BulletinBoard from '../components/BulletinBoard/BulletinBoard';
 import FileLibrary from '../components/FileLibrary/FileLibrary';
@@ -33,7 +33,7 @@ const DashboardPage: React.FC = () => {
 
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [users, setUsers] = useState<UserForAdminResponse[]>([]);
-  const [loading, setLoading] = useState(true);
+  
   const [isEditingBottomBanner, setIsEditingBottomBanner] = useState(false);
   const [bottomBannerLink, setBottomBannerLink] = useState(settings?.bottomBannerLink || '');
   const [bottomBannerFile, setBottomBannerFile] = useState<File | null>(null);
@@ -44,7 +44,7 @@ const DashboardPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
+        
         const customerData = await getCustomers();
         setCustomers(customerData);
 
@@ -55,7 +55,7 @@ const DashboardPage: React.FC = () => {
       } catch (error) {
         console.error("Failed to fetch dashboard data", error);
       } finally {
-        setLoading(false);
+        
       }
     };
     fetchData();

@@ -131,7 +131,7 @@ const Layout: React.FC = () => {
     navigate('/login');
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
     navigate(newValue);
   };
 

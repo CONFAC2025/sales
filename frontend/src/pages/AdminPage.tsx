@@ -13,7 +13,6 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
   Chip,
   Button,
   Dialog,
@@ -21,9 +20,9 @@ import {
   DialogContent,
   TableSortLabel,
 } from '@mui/material';
-import type { SelectChangeEvent } from '@mui/material/Select';
+
 import ChatIcon from '@mui/icons-material/Chat';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+
 import { getUsersForAdmin, updateUserStatus, createUser, updateUserType, assignOrg, setUserManager } from '../services/adminService';
 import { getDepartments, getTeams } from '../services/organizationService';
 import type { Department, Team } from '../services/organizationService';
@@ -42,12 +41,12 @@ const AdminPage: React.FC = () => {
   const [users, setUsers] = useState<UserForAdminResponse[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
-  const [error, setError] = useState<string>('');
+  
   const [openUserDialog, setOpenUserDialog] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [openManagerDialog, setOpenManagerDialog] = useState(false);
-  const [selectedUserForManager, setSelectedUserForManager] = useState<UserForAdminResponse | null>(null);
+  const [selectedUserForManager, _setSelectedUserForManager] = useState<UserForAdminResponse | null>(null);
   const [logDialogOpen, setLogDialogOpen] = useState(false);
   const [selectedUserForLog, setSelectedUserForLog] = useState<UserForAdminResponse | null>(null);
   const { startOneOnOneChat } = useChat();
@@ -80,7 +79,7 @@ const AdminPage: React.FC = () => {
       setDepartments(fetchedDepartments);
       setTeams(fetchedTeams);
     } catch (err) {
-      setError('Failed to fetch data.');
+      
       toast.error('데이터를 불러오는데 실패했습니다.');
     }
   };

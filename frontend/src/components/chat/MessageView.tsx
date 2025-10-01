@@ -60,7 +60,7 @@ const MessageView: React.FC<MessageViewProps> = ({ roomId }) => {
   };
 
   const handleDeleteMessage = (messageId: string) => {
-    deleteMessage(roomId, messageId);
+    deleteMessage(messageId);
   };
 
   return (

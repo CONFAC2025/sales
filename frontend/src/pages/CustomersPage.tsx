@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { GridLegacy as Grid, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, IconButton, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import type { SelectChangeEvent } from '@mui/material/Select';
+import { Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, IconButton, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
@@ -42,7 +42,7 @@ const CustomersPage: React.FC = () => {
   const { notifications, markAsReadByLink } = useNotifications();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [users, setUsers] = useState<UserForAdminResponse[]>([]);
-  const [error, setError] = useState<string>('');
+  
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
   const [logDialogOpen, setLogDialogOpen] = useState(false);
@@ -81,7 +81,7 @@ const CustomersPage: React.FC = () => {
       setCustomers(fetchedCustomers);
       setUsers(fetchedUsers);
     } catch (err) {
-      setError('Failed to fetch initial data.');
+      
       console.error(err);
     }
   };
@@ -100,7 +100,7 @@ const CustomersPage: React.FC = () => {
       const fetchedCustomers = await getCustomers(filters);
       setCustomers(fetchedCustomers);
     } catch (err) {
-      setError('Failed to fetch customers.');
+      
       console.error(err);
     }
   };
@@ -141,7 +141,7 @@ const CustomersPage: React.FC = () => {
         await deleteCustomer(selectedCustomerId);
         fetchCustomers();
       } catch (err) {
-        setError('Failed to delete customer.');
+        
       } finally {
         setOpenDeleteDialog(false);
         setSelectedCustomerId(null);

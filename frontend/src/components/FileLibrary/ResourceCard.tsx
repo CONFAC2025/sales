@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardActions, Typography, Button, IconButton, Box } from '@mui/material';
+import { Card, CardContent, CardActions, Typography, Button, IconButton } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { deleteResource } from '../../services/resourceService';
 import type { Resource } from '../../services/resourceService';

@@ -10,7 +10,6 @@ import {
   ListItem,
   Checkbox,
   ListItemText,
-  ListItemIcon,
 } from '@mui/material';
 import { getSubordinates, createChatRoom } from '../../services/chatService';
 import type { UserForAdminResponse } from '../../types/admin';

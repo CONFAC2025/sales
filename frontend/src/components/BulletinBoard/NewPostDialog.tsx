@@ -8,7 +8,6 @@ import {
   TextField,
   Box,
   Chip,
-  IconButton,
 } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { createPost } from '../../services/postService';
