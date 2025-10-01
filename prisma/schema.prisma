@@ -1,0 +1,316 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ENUMS
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum UserType {
+  ADMIN_STAFF         // 최상위 관리자 (L1)
+  MIDDLE_MANAGER      // 중간 관리자
+  GENERAL_HQ_MANAGER  // 총괄 본부장
+  DEPARTMENT_MANAGER  // 본부장 (L2)
+  TEAM_LEADER         // 팀장 (L3)
+  SALES_STAFF         // 상주 팀원 (L4)
+  REAL_ESTATE         // 부동산 중개업소 (L4)
+  PARTNER_STAFF       // 외부 협력직원 (L4)
+}
+
+enum CustomerStatus {
+  REGISTERED // 등록
+  VISITED    // 방문
+  CONSULTED  // 상담
+  CONTRACTED // 계약
+  CANCELLED  // 취소
+}
+
+enum PotentialLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum LogType {
+  VIEW
+  EDIT
+  CREATE
+  DELETE
+}
+
+// MODELS
+
+model User {
+  id                  String    @id @default(cuid())
+  userId              String    @unique // 사용자가 입력하는 로그인 ID
+  email               String?   @unique
+  password            String
+  name                String
+  phone               String
+  status              UserStatus @default(PENDING)
+  userType            UserType
+  organizationLevel   Int       // 1, 2, 3, 4
+
+  departmentId        String?
+  teamId              String?
+
+  department          Department? @relation(fields: [departmentId], references: [id])
+  team                Team?       @relation(fields: [teamId], references: [id])
+
+  managerId           String?     // 나의 직속 상급자 ID
+  manager             User?       @relation("Hierarchy", fields: [managerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subordinates        User[]      @relation("Hierarchy")
+
+  registeredCustomers Customer[]  @relation("RegisteredBy")
+
+  chatRoomMemberships ChatRoomMember[]
+  sentMessages        ChatMessage[]
+  sentInvitations     ChatInvitation[] @relation("Inviter")
+  receivedInvitations ChatInvitation[] @relation("Invitee")
+
+  delegationsGiven    Delegation[] @relation("Delegator")
+  delegationsReceived Delegation[] @relation("Delegatee")
+
+  authoredPosts       Post[]      @relation("AuthoredPosts")
+  authoredComments    Comment[]   @relation("AuthoredComments")
+
+  notifications       Notification[]
+  uploadedResources   Resource[]    @relation("UploadedResources")
+
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  organizationRequest String?   // 사용자의 소속 신청 내용
+}
+
+model Department {
+  id            String  @id @default(cuid())
+  name          String  @unique
+  code          String  @unique
+  description   String?
+  capacity      Int     @default(100)
+  
+  users         User[]
+  teams         Team[]
+}
+
+model Team {
+  id            String  @id @default(cuid())
+  name          String
+  description   String?
+  capacity      Int     @default(20)
+
+  departmentId  String
+  department    Department @relation(fields: [departmentId], references: [id])
+
+  users         User[]
+}
+
+model Customer {
+  id                 String   @id @default(cuid())
+  name               String
+  phone              String   @unique
+  status             CustomerStatus @default(REGISTERED)
+  notes              String?
+
+  interestedProperty String?
+  potential          PotentialLevel?
+  source             String?
+
+  registeredById     String
+  registeredBy       User     @relation("RegisteredBy", fields: [registeredById], references: [id])
+
+  attachments        Attachment[]
+  accessLogs         AccessLog[]
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Attachment {
+  id           String   @id @default(cuid())
+  fileName     String
+  filePath     String
+  fileType     String
+  fileSize     Int
+
+  customerId   String
+  customer     Customer @relation(fields: [customerId], references: [id])
+
+  uploadedAt   DateTime @default(now())
+}
+
+model AccessLog {
+  id           String   @id @default(cuid())
+  accessedBy   String
+  logType      LogType
+
+  customerId   String
+  customer     Customer @relation(fields: [customerId], references: [id])
+
+  accessedAt   DateTime @default(now())
+}
+
+model OrgOpeningRequest {
+  id          String    @id @default(cuid())
+  requestorId String
+  requestType String
+  targetName  String
+  targetId    String?   @unique
+  reason      String?
+  isApproved  Boolean   @default(false)
+  
+  createdAt   DateTime  @default(now())
+}
+
+model Delegation {
+  id          String    @id @default(cuid())
+  delegatorId String
+  delegateeId String
+  startDate   DateTime
+  endDate     DateTime
+
+  delegator   User      @relation("Delegator", fields: [delegatorId], references: [id])
+  delegatee   User      @relation("Delegatee", fields: [delegateeId], references: [id])
+
+  createdAt   DateTime  @default(now())
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  recipientId String
+  recipient   User      @relation(fields: [recipientId], references: [id])
+  type        String
+  message     String
+  link        String?
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  @@index([recipientId])
+}
+
+// CHAT MODELS
+model ChatRoom {
+  id        String   @id @default(cuid())
+  name      String?
+  isGroup   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members   ChatRoomMember[]
+  messages  ChatMessage[]
+  invitations ChatInvitation[]
+}
+
+model ChatRoomMember {
+  id         String   @id @default(cuid())
+  joinedAt   DateTime @default(now())
+
+  roomId     String
+  room       ChatRoom @relation(fields: [roomId], references: [id])
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@unique([roomId, userId])
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  content   String?
+  fileUrl   String?
+  fileType  String?
+  createdAt DateTime @default(now())
+
+  roomId    String
+  room      ChatRoom @relation(fields: [roomId], references: [id])
+
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id])
+}
+
+model ChatInvitation {
+  id        String   @id @default(cuid())
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+
+  roomId    String
+  room      ChatRoom @relation(fields: [roomId], references: [id])
+
+  inviterId String
+  inviter   User     @relation("Inviter", fields: [inviterId], references: [id])
+
+  inviteeId String
+  invitee   User     @relation("Invitee", fields: [inviteeId], references: [id])
+}
+
+// BULLETIN BOARD MODELS
+model Post {
+  id        String    @id @default(cuid())
+  title     String
+  content   String    @db.Text
+  fileUrl   String?
+  fileType  String?
+  createdAt DateTime  @default(now())
+  authorId  String
+  author    User      @relation("AuthoredPosts", fields: [authorId], references: [id])
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  authorId  String
+  author    User      @relation("AuthoredComments", fields: [authorId], references: [id])
+}
+
+model SiteSettings {
+  id          Int      @id @default(1)
+  logoUrl     String?
+  bannerUrl   String?
+  topText     String?
+  bottomBannerUrl   String?
+  bottomBannerLink  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  filePath    String
+  fileType    String
+  fileSize    Int
+  createdAt   DateTime @default(now())
+  authorId    String
+  author      User     @relation("UploadedResources", fields: [authorId], references: [id])
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  timestamp   DateTime @default(now())
+  userId      String   // ID of the user who performed the action
+  userName    String   // Name of the user, stored for convenience
+  action      String   // e.g., 'CREATE', 'UPDATE', 'DELETE'
+  entityType  String   // e.g., 'CUSTOMER', 'USER'
+  entityId    String   // ID of the entity that was changed
+  details     Json     // Details of the change, e.g., { field: 'status', from: 'PENDING', to: 'APPROVED' }
+
+  @@index([entityType, entityId])
+}

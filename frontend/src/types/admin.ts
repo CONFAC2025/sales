@@ -1,0 +1,24 @@
+import type { UserStatus, UserType } from '@prisma/client';
+
+export interface UserForAdminResponse {
+  id: string;
+  userId: string;
+  name: string;
+  phone: string;
+  status: UserStatus;
+  userType: UserType;
+  departmentName?: string;
+  teamName?: string;
+  registeredCustomersCount: number;
+}
+
+export interface CreateUserPayload {
+  userId: string;
+  email?: string;
+  password?: string;
+  name: string;
+  phone: string;
+  userType: UserType;
+  departmentId?: string;
+  teamId?: string;
+}

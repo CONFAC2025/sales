@@ -1,0 +1,477 @@
+Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+LoginPage.tsx:80 MUI Grid: The `item` prop has been removed and is no longer necessary. You can safely remove it.
+
+(anonymous) @ chunk-E36NUFVL.js?v=00fa36a4:7715
+deleteLegacyGridProps @ chunk-E36NUFVL.js?v=00fa36a4:7712
+Grid3 @ chunk-E36NUFVL.js?v=00fa36a4:7785
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4206
+updateForwardRef @ react-dom_client.js?v=00fa36a4:6461
+beginWork @ react-dom_client.js?v=00fa36a4:7864
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<ForwardRef(Grid3)>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+LoginPage @ LoginPage.tsx:80
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<LoginPage>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+App @ App.tsx:19
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ main.tsx:24Understand this warning
+api.ts:10 Interceptor triggered for: /site-settings
+api.ts:12 Token from localStorage: null
+api.ts:17 No token found in localStorage
+api.ts:10 Interceptor triggered for: /site-settings
+api.ts:12 Token from localStorage: null
+api.ts:17 No token found in localStorage
+LoginPage.tsx:15 Login button clicked
+LoginPage.tsx:18 Calling loginService...
+api.ts:10 Interceptor triggered for: /auth/login
+api.ts:12 Token from localStorage: null
+api.ts:17 No token found in localStorage
+LoginPage.tsx:20 loginService success: {token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZ…4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8', user: {…}}
+api.ts:10 Interceptor triggered for: /chat/rooms
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /notifications
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+DashboardPage.tsx:160 MUI: The GridLegacy component is deprecated. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+warnAboutDeprecatedGridLegacy @ @mui_material.js?v=00fa36a4:16689
+(anonymous) @ @mui_material.js?v=00fa36a4:17030
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17486
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+commitHookEffectListMount @ react-dom_client.js?v=00fa36a4:8460
+commitHookPassiveMountEffects @ react-dom_client.js?v=00fa36a4:8518
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9887
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9899
+flushPassiveEffects @ react-dom_client.js?v=00fa36a4:11302
+(anonymous) @ react-dom_client.js?v=00fa36a4:11060
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<ForwardRef(GridLegacy2)>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+DashboardPage @ DashboardPage.tsx:160
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopConcurrentByScheduler @ react-dom_client.js?v=00fa36a4:10864
+renderRootConcurrent @ react-dom_client.js?v=00fa36a4:10844
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<DashboardPage>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+App @ App.tsx:24
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ main.tsx:24Understand this warning
+api.ts:10 Interceptor triggered for: /posts
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /resources
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /customers
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /posts
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /resources
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /customers
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+NotificationContext.tsx:45 WebSocket connection to 'ws://localhost:3002/ws' failed: 
+(anonymous) @ NotificationContext.tsx:45
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17486
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+commitHookEffectListMount @ react-dom_client.js?v=00fa36a4:8460
+commitHookPassiveMountEffects @ react-dom_client.js?v=00fa36a4:8518
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9887
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9881
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9984
+recursivelyTraversePassiveMountEffects @ react-dom_client.js?v=00fa36a4:9868
+commitPassiveMountOnFiber @ react-dom_client.js?v=00fa36a4:9899
+flushPassiveEffects @ react-dom_client.js?v=00fa36a4:11302
+(anonymous) @ react-dom_client.js?v=00fa36a4:11060
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36Understand this error
+FileLibrary.tsx:38 MUI Grid: The `xs` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+(anonymous) @ chunk-E36NUFVL.js?v=00fa36a4:7715
+deleteLegacyGridProps @ chunk-E36NUFVL.js?v=00fa36a4:7712
+Grid3 @ chunk-E36NUFVL.js?v=00fa36a4:7785
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4206
+updateForwardRef @ react-dom_client.js?v=00fa36a4:6461
+beginWork @ react-dom_client.js?v=00fa36a4:7864
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<ForwardRef(Grid3)>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ FileLibrary.tsx:38
+FileLibrary @ FileLibrary.tsx:37
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<FileLibrary>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+DashboardPage @ DashboardPage.tsx:177
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopConcurrentByScheduler @ react-dom_client.js?v=00fa36a4:10864
+renderRootConcurrent @ react-dom_client.js?v=00fa36a4:10844
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<DashboardPage>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+App @ App.tsx:24
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ main.tsx:24Understand this warning
+FileLibrary.tsx:38 MUI Grid: The `sm` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+(anonymous) @ chunk-E36NUFVL.js?v=00fa36a4:7715
+deleteLegacyGridProps @ chunk-E36NUFVL.js?v=00fa36a4:7712
+Grid3 @ chunk-E36NUFVL.js?v=00fa36a4:7785
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4206
+updateForwardRef @ react-dom_client.js?v=00fa36a4:6461
+beginWork @ react-dom_client.js?v=00fa36a4:7864
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<ForwardRef(Grid3)>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ FileLibrary.tsx:38
+FileLibrary @ FileLibrary.tsx:37
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<FileLibrary>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+DashboardPage @ DashboardPage.tsx:177
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopConcurrentByScheduler @ react-dom_client.js?v=00fa36a4:10864
+renderRootConcurrent @ react-dom_client.js?v=00fa36a4:10844
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<DashboardPage>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+App @ App.tsx:24
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ main.tsx:24Understand this warning
+FileLibrary.tsx:38 MUI Grid: The `md` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+(anonymous) @ chunk-E36NUFVL.js?v=00fa36a4:7715
+deleteLegacyGridProps @ chunk-E36NUFVL.js?v=00fa36a4:7712
+Grid3 @ chunk-E36NUFVL.js?v=00fa36a4:7785
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4206
+updateForwardRef @ react-dom_client.js?v=00fa36a4:6461
+beginWork @ react-dom_client.js?v=00fa36a4:7864
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<ForwardRef(Grid3)>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ FileLibrary.tsx:38
+FileLibrary @ FileLibrary.tsx:37
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<FileLibrary>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+DashboardPage @ DashboardPage.tsx:177
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopConcurrentByScheduler @ react-dom_client.js?v=00fa36a4:10864
+renderRootConcurrent @ react-dom_client.js?v=00fa36a4:10844
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<DashboardPage>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+App @ App.tsx:24
+react_stack_bottom_frame @ react-dom_client.js?v=00fa36a4:17424
+renderWithHooksAgain @ react-dom_client.js?v=00fa36a4:4281
+renderWithHooks @ react-dom_client.js?v=00fa36a4:4217
+updateFunctionComponent @ react-dom_client.js?v=00fa36a4:6619
+beginWork @ react-dom_client.js?v=00fa36a4:7654
+runWithFiberInDEV @ react-dom_client.js?v=00fa36a4:1485
+performUnitOfWork @ react-dom_client.js?v=00fa36a4:10868
+workLoopSync @ react-dom_client.js?v=00fa36a4:10728
+renderRootSync @ react-dom_client.js?v=00fa36a4:10711
+performWorkOnRoot @ react-dom_client.js?v=00fa36a4:10330
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=00fa36a4:11623
+performWorkUntilDeadline @ react-dom_client.js?v=00fa36a4:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=00fa36a4:250
+(anonymous) @ main.tsx:24Understand this warning
+api.ts:10 Interceptor triggered for: /admin/users
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /admin/users
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
+api.ts:10 Interceptor triggered for: /chat/rooms/cmg6bspl400006zor48wza6vo/messages
+api.ts:12 Token from localStorage: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtZzRpa2JnMTAwMDA2enVoeGNid3NjaTkiLCJ1c2VySWQiOiJhZG1pbiIsInVzZXJUeXBlIjoiQURNSU5fU1RBRkYiLCJvcmdhbml6YXRpb25MZXZlbCI6MSwiaWF0IjoxNzU5MjI3NDYxLCJleHAiOjE3NTkzMTM4NjF9.3KPRIU2GLUzu_WFX5AFUfFpRf7z4kP-sycPADHyY-w8
+api.ts:15 Authorization header set
