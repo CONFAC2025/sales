@@ -24,7 +24,7 @@ const server = Fastify({
 });
 
 server.register(cors, {
-  origin: true,
+  origin: "https://sales-wine-mu.vercel.app",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
 });
 server.register(websocket);
