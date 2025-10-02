@@ -8,9 +8,9 @@ const connections = new Map<string, any>();
 export function startWebSocketServer(server: FastifyInstance) {
   server.get('/ws', { websocket: true }, (connection, req) => {
     // The connection object from fastify-websocket is the socket itself.
-    const socket = connection.socket;
+    const socket = connection;
 
-    socket.on('message', async (message: Buffer) => {
+    socket.on('data', async (message: Buffer) => {
       try {
         const data = JSON.parse(message.toString());
         if (data.type === 'AUTH') {
