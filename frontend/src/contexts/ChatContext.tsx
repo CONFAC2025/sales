@@ -92,7 +92,8 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
 
   const sendMessage = async (roomId: string, content: string, file?: File) => {
     try {
-      await apiSendMessage(roomId, content, file);
+      const newMessage = await apiSendMessage(roomId, content, file);
+      addMessage(newMessage);
     } catch (error) {
       toast.error('메시지 전송에 실패했습니다.');
     }

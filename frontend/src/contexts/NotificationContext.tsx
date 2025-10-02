@@ -5,6 +5,9 @@ import type { Notification } from '../types/notification';
 import { getNotifications, pollNotifications } from '../services/notificationService';
 
 // Simple event emitter for local events if needed, but not for websockets
+import { getNotifications, pollNotifications, markAsRead } from '../services/notificationService';
+
+// Simple event emitter for local events if needed, but not for websockets
 class EventEmitter {
   private listeners: { [event: string]: Function[] } = {};
   subscribe(event: string, callback: Function) {
@@ -79,8 +82,41 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  const markNotificationAsRead = (_notificationId: string) => {};
-  const markAsReadByLink = (_link: string) => {};
+  const markNotificationAsRead = async (notificationId: string) => {
+    setNotifications(prev => 
+      prev.map(n => n.id === notificationId ? { ...n, isRead: true } : n)
+    );
+    try {
+      await markAsRead(notificationId);
+    } catch (error) {
+      console.error('Failed to mark notification as read', error);
+      // Optionally revert state on error
+      setNotifications(prev => 
+        prev.map(n => n.id === notificationId ? { ...n, isRead: false } : n)
+      );
+    }
+  };
+
+  const markAsReadByLink = async (link: string) => {
+    const notificationsToUpdate = notifications.filter(n => n.link === link && !n.isRead);
+    if (notificationsToUpdate.length === 0) return;
+
+    // Optimistically update UI
+    setNotifications(prev => 
+      prev.map(n => n.link === link ? { ...n, isRead: true } : n)
+    );
+
+    // Call API for all of them
+    try {
+      await Promise.all(notificationsToUpdate.map(n => markAsRead(n.id)));
+    } catch (error) {
+      console.error('Failed to mark notifications by link as read', error);
+      // Optionally revert state on error
+      setNotifications(prev => 
+        prev.map(n => notificationsToUpdate.some(ntu => ntu.id === n.id) ? { ...n, isRead: false } : n)
+      );
+    }
+  };
 
   return (
     <NotificationContext.Provider value={{ notifications, unreadCount, markNotificationAsRead, markAsReadByLink }}>
