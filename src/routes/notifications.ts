@@ -23,4 +23,11 @@ export default async function (fastify: FastifyInstance, opts: FastifyPluginOpti
     await NotificationService.markAllAsRead(user.id);
     reply.send({ success: true });
   });
+
+  fastify.get('/poll', async (request: FastifyRequest<{ Querystring: { since?: string } }>, reply) => {
+    const user = request.user!;
+    const { since } = request.query;
+    const notifications = await NotificationService.getNewNotificationsForUser(user.id, since);
+    reply.send({ success: true, data: notifications });
+  });
 }

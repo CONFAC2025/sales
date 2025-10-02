@@ -1,136 +1,83 @@
-import React, { createContext, useContext, useEffect, useRef, useCallback } from 'react';
-import type { ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { useAuth } from './AuthContext';
 import type { Notification } from '../types/notification';
+import { getNotifications, pollNotifications } from '../services/notificationService';
 
-// 1. Real Event Emitter
+// Simple event emitter for local events if needed, but not for websockets
 class EventEmitter {
   private listeners: { [event: string]: Function[] } = {};
-
   subscribe(event: string, callback: Function) {
     this.listeners[event] = this.listeners[event] || [];
     this.listeners[event].push(callback);
   }
-
   unsubscribe(event: string, callback: Function) {
     if (this.listeners[event]) {
       this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
     }
   }
-
   dispatch(event: string, data: any) {
     if (this.listeners[event]) {
       this.listeners[event].forEach(cb => cb(data));
     }
   }
 }
-
 export const eventEmitter = new EventEmitter();
 
-// 2. Context Type Definition
 interface NotificationContextType {
   notifications: Notification[];
   unreadCount: number;
+  // These can be implemented later if needed
   markNotificationAsRead: (notificationId: string) => void;
   markAsReadByLink: (link: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-// 3. Provider with WebSocket Logic
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated, token } = useAuth();
-  const [notifications, setNotifications] = React.useState<Notification[]>([]);
-  const [unreadCount, setUnreadCount] = React.useState(0);
-  const socketRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<number | null>(null);
+  const { isAuthenticated } = useAuth();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [latestDate, setLatestDate] = useState<string | undefined>(undefined);
+  const isPolling = useRef(false);
 
-  const addNotification = useCallback((newNotification: Notification) => {
-    setNotifications(prev => [newNotification, ...prev.slice(0, 99)]); // Keep last 100
-    if (!newNotification.isRead) {
-      setUnreadCount(prev => prev + 1);
-    }
-  }, []);
-
+  // Initial fetch of all notifications
   useEffect(() => {
-    // Subscribe to events dispatched from WebSocket
-    eventEmitter.subscribe('NEW_NOTIFICATION', addNotification);
-    return () => {
-      eventEmitter.unsubscribe('NEW_NOTIFICATION', addNotification);
-    };
-  }, [addNotification]);
+    if (isAuthenticated) {
+      getNotifications()
+        .then(initialNotifications => {
+          setNotifications(initialNotifications);
+          if (initialNotifications.length > 0) {
+            setLatestDate(initialNotifications[0].createdAt);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [isAuthenticated]);
 
+  // Polling effect
   useEffect(() => {
-    if (isAuthenticated && token) {
-      connect();
-    } else {
-      disconnect();
-    }
+    if (!isAuthenticated) return;
 
-    return () => {
-      disconnect();
-    };
-  }, [isAuthenticated, token]);
-
-  const connect = () => {
-    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-      return;
-    }
-
-    const wsUrl = 'wss://sales-ofg0.onrender.com/ws';
-    const socket = new WebSocket(wsUrl);
-    socketRef.current = socket;
-
-    socket.onopen = () => {
-      console.log('WebSocket connected');
-      // Send auth token
-      socket.send(JSON.stringify({ type: 'AUTH', payload: token }));
-      // Reset reconnect timer on successful connection
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
-        reconnectTimeoutRef.current = null;
-      }
-    };
-
-    socket.onmessage = (event) => {
+    const intervalId = setInterval(async () => {
+      if (isPolling.current) return;
+      isPolling.current = true;
       try {
-        const data = JSON.parse(event.data);
-        console.log('WebSocket message received:', data);
-        // Dispatch the event globally
-        eventEmitter.dispatch(data.type, data.payload);
+        const newNotifications = await pollNotifications(latestDate);
+        if (newNotifications.length > 0) {
+          setNotifications(prev => [...newNotifications, ...prev]);
+          setLatestDate(newNotifications[0].createdAt);
+        }
       } catch (error) {
-        console.error('Failed to parse WebSocket message:', error);
+        console.error('Polling for notifications failed', error);
+      } finally {
+        isPolling.current = false;
       }
-    };
+    }, 5000); // Poll every 5 seconds
 
-    socket.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
+    return () => clearInterval(intervalId);
+  }, [isAuthenticated, latestDate]);
 
-    socket.onclose = () => {
-      console.log('WebSocket disconnected. Attempting to reconnect...');
-      // Simple reconnect logic with a 5-second delay
-      if (!reconnectTimeoutRef.current) {
-        reconnectTimeoutRef.current = setTimeout(() => {
-          connect();
-          reconnectTimeoutRef.current = null;
-        }, 5000);
-      }
-    };
-  };
+  const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  const disconnect = () => {
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current);
-      reconnectTimeoutRef.current = null;
-    }
-    if (socketRef.current) {
-      socketRef.current.close();
-      socketRef.current = null;
-    }
-  };
-
-  // Dummy implementations for now, can be built out later
   const markNotificationAsRead = (_notificationId: string) => {};
   const markAsReadByLink = (_link: string) => {};
 

@@ -26,4 +26,19 @@ export class NotificationService {
       data: { isRead: true },
     });
   }
+
+  public static async getNewNotificationsForUser(userId: string, since?: string): Promise<Notification[]> {
+    const where: Prisma.NotificationWhereInput = {
+      recipientId: userId,
+    };
+    if (since) {
+      where.createdAt = {
+        gt: new Date(since),
+      };
+    }
+    return prisma.notification.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }

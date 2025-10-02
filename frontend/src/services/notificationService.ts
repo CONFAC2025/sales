@@ -14,3 +14,10 @@ export const markAsRead = async (notificationId: string): Promise<Notification> 
 export const markAllAsRead = async (): Promise<void> => {
   await api.put('/notifications/read-all');
 };
+
+export const pollNotifications = async (since?: string): Promise<Notification[]> => {
+  const response = await api.get('/notifications/poll', {
+    params: { since },
+  });
+  return response.data.data;
+};
