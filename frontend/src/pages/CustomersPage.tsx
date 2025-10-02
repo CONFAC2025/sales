@@ -235,10 +235,10 @@ const CustomersPage: React.FC = () => {
     <Box>
       {customers && customers.map((customer) => (
         <Card key={customer.id} sx={{ mb: 2 }} onClick={() => handleRowClick(customer)}>
-          <CardContent>
+          <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <Box>
-                <Typography variant="h6">{customer.name}</Typography>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{customer.name}</Typography>
                 <Typography variant="body2" color="text.secondary">
                   <Link href={`tel:${customer.phone}`} onClick={(e) => e.stopPropagation()}>{customer.phone}</Link>
                 </Typography>
@@ -246,11 +246,11 @@ const CustomersPage: React.FC = () => {
               {getStatusChip(customer.status)}
             </Box>
             {unreadCustomerUpdates.has(`/customers/${customer.id}`) && (
-              <Typography variant="caption" color="secondary.main" sx={{ display: 'block', mt: 1}}>
+              <Typography variant="caption" color="secondary.main" sx={{ display: 'block', mt: 0.5}}>
                 {unreadCustomerUpdates.get(`/customers/${customer.id}`)}
               </Typography>
             )}
-            <Box sx={{ mt: 2, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+            <Box sx={{ mt: 1.5, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0.5 }}>
               <Typography variant="body2"><b>관심물건:</b> {customer.interestedProperty || '-'}</Typography>
               <Typography variant="body2"><b>유입경로:</b> {customer.source || '-'}</Typography>
               <Typography variant="body2"><b>성향:</b> {getPotentialChip(customer.potential)}</Typography>
@@ -260,7 +260,7 @@ const CustomersPage: React.FC = () => {
               등록일: {new Date(customer.createdAt).toLocaleDateString()}
             </Typography>
           </CardContent>
-          <CardActions sx={{ justifyContent: 'flex-end' }}>
+          <CardActions sx={{ justifyContent: 'flex-end', pt: 0 }}>
             {canSendMessage && customer.registeredById && customer.registeredById !== currentUser?.id && (
               <IconButton onClick={(e) => {e.stopPropagation(); handleSendMessage(customer)}} size="small">
                 <SendIcon />

@@ -166,7 +166,19 @@ const Layout: React.FC = () => {
           <Button color="inherit" onClick={handleLogout}>로그아웃</Button>
         </Toolbar>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <Tabs value={getCurrentTab()} onChange={handleTabChange} textColor="inherit" variant="scrollable" allowScrollButtonsMobile>
+          <Tabs 
+            value={getCurrentTab()} 
+            onChange={handleTabChange} 
+            textColor="inherit" 
+            variant={isMobile ? "fullWidth" : "standard"}
+            centered
+            sx={{
+              '& .MuiTab-root': { // Target all Tab components within these Tabs
+                minWidth: 'auto',
+                p: 1,
+              }
+            }}
+          >
             <Tab 
               label={
                 <Badge badgeContent={unreadCount} color="error">

@@ -12,7 +12,10 @@ import {
   IconButton,
   Drawer,
   Divider,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GroupIcon from '@mui/icons-material/Group';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -28,6 +31,8 @@ interface MessageViewProps {
 const MessageView: React.FC<MessageViewProps> = ({ roomId }) => {
   const { messages, sendMessage, rooms, getRoomDisplayName, deleteMessage, closeRoom } = useChat();
   const { user } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [newMessage, setNewMessage] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [hoveredMessageId, setHoveredMessageId] = useState<string | null>(null);
@@ -68,15 +73,24 @@ const MessageView: React.FC<MessageViewProps> = ({ roomId }) => {
       {/* Header */}
       <Paper square sx={{ borderBottom: '1px solid #ddd' }}>
         <Toolbar variant="dense">
+          {isMobile && (
+            <IconButton edge="start" size="small" onClick={() => closeRoom(roomId)} sx={{ mr: 1 }}>
+              <ArrowBackIcon />
+            </IconButton>
+          )}
           <Typography variant="h6" sx={{ flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {currentRoom ? getRoomDisplayName(currentRoom) : ''}
           </Typography>
-          <IconButton size="small" onClick={() => setIsDrawerOpen(true)}>
-            <GroupIcon fontSize="small" />
-          </IconButton>
-          <IconButton size="small" onClick={() => closeRoom(roomId)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
+          {!isMobile && (
+            <>
+              <IconButton size="small" onClick={() => setIsDrawerOpen(true)}>
+                <GroupIcon fontSize="small" />
+              </IconButton>
+              <IconButton size="small" onClick={() => closeRoom(roomId)}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </>
+          )}
         </Toolbar>
       </Paper>
 
