@@ -23,11 +23,25 @@ const server = Fastify({
   logger: true,
 });
 
-server.register(cors, {
-  origin: "https://sales-wine-mu.vercel.app",
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+// server.register(cors, { ... }); // REMOVED CORS PLUGIN
+
+// Manual CORS Handling
+server.addHook('onSend', (request, reply, payload, done) => {
+  reply.header('Access-Control-Allow-Origin', 'https://sales-wine-mu.vercel.app');
+  done();
+});
+
+server.addHook('preHandler', (request, reply, done) => {
+  reply.header('Access-Control-Allow-Origin', 'https://sales-wine-mu.vercel.app');
+  reply.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  reply.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  reply.header('Access-Control-Allow-Credentials', 'true');
+
+  if (request.method === 'OPTIONS') {
+    reply.code(204).send();
+    return;
+  }
+  done();
 });
 server.register(websocket);
 server.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } });
