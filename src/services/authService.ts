@@ -41,7 +41,7 @@ export class AuthService {
     });
 
     // 관리자에게 알림 보내기
-    const admins = await prisma.user.findMany({ where: { userType: 'ADMIN_STAFF' } });
+    const admins = await prisma.user.findMany({ where: { userType: { in: ['ADMIN_STAFF', 'MIDDLE_MANAGER', 'GENERAL_HQ_MANAGER'] } } });
     const message = data.organizationRequest
       ? `새로운 사용자 ${newUser.name}님이 가입 승인을 기다립니다. 소속 요청: ${data.organizationRequest}`
       : `새로운 사용자 ${newUser.name}님이 가입 승인을 기다립니다.`;
