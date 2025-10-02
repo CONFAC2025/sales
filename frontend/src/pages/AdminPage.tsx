@@ -19,6 +19,12 @@ import {
   DialogTitle,
   DialogContent,
   TableSortLabel,
+  useTheme,
+  useMediaQuery,
+  Card,
+  CardContent,
+  CardActions,
+  Link,
 } from '@mui/material';
 
 import ChatIcon from '@mui/icons-material/Chat';
@@ -39,6 +45,8 @@ import { useNotifications } from '../contexts/NotificationContext';
 import { translateUserType } from '../utils/user';
 
 const AdminPage: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [users, setUsers] = useState<UserForAdminResponse[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
@@ -60,7 +68,6 @@ const AdminPage: React.FC = () => {
     notifications
       .filter(n => !n.isRead && typeof n.link === 'string' && n.link === '/admin/users')
       .forEach(n => {
-        // Extract user name from message like "새로운 사용자 OOO님이 가입 승인을 기다립니다."
         const match = n.message.match(/새로운 사용자 (.*?)님이/);
         if (match && match[1]) {
           messageMap.set(match[1], n.message);
@@ -80,7 +87,6 @@ const AdminPage: React.FC = () => {
       setDepartments(fetchedDepartments);
       setTeams(fetchedTeams);
     } catch (err) {
-      
       toast.error('데이터를 불러오는데 실패했습니다.');
     }
   };
@@ -117,7 +123,6 @@ const AdminPage: React.FC = () => {
   const handleOrgChange = async (userId: string, departmentId: string | null, teamId: string | null) => {
     try {
       await assignOrg(userId, departmentId, teamId);
-      // Refetch user to get updated department and team names
       fetchData();
       toast.success('사용자 조직이 변경되었습니다.');
     } catch (err) {
@@ -162,6 +167,124 @@ const AdminPage: React.FC = () => {
     return statusMap[status] || <Chip label={status} size="small" />;
   };
 
+  const DesktopView = () => (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>아이디</TableCell>
+            <TableCell>이름</TableCell>
+            <TableCell>연락처</TableCell>
+            <TableCell>직급</TableCell>
+            <TableCell>부서(본부)</TableCell>
+            <TableCell>팀</TableCell>
+            <TableCell>상태</TableCell>
+            <TableCell>고객등록수</TableCell>
+            <TableCell align="right">작업</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {users.map((user) => (
+            <TableRow key={user.id} hover sx={{ cursor: 'pointer' }} onClick={() => handleRowClick(user)}>
+              <TableCell>{user.userId}</TableCell>
+              <TableCell>{user.name}</TableCell>
+              <TableCell><Link href={`tel:${user.phone}`} onClick={(e) => e.stopPropagation()}>{user.phone}</Link></TableCell>
+              <TableCell onClick={(e) => e.stopPropagation()}>
+                <FormControl size="small" sx={{ minWidth: 120 }}>
+                  <Select value={user.userType} onChange={(e) => handleUserTypeChange(user.id, e.target.value as UserType)}>
+                    {UserTypeOptions.map((type) => (<MenuItem key={type} value={type}>{translateUserType(type)}</MenuItem>))}
+                  </Select>
+                </FormControl>
+              </TableCell>
+              <TableCell onClick={(e) => e.stopPropagation()}>
+                 <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <Select value={user.departmentId || ''} onChange={(e) => handleOrgChange(user.id, e.target.value, null)}>
+                      <MenuItem value=""><em>미지정</em></MenuItem>
+                      {departments.map((dept) => (<MenuItem key={dept.id} value={dept.id}>{dept.name}</MenuItem>))}
+                    </Select>
+                  </FormControl>
+              </TableCell>
+              <TableCell onClick={(e) => e.stopPropagation()}>
+                <FormControl size="small" sx={{ minWidth: 120 }}>
+                  <Select value={user.teamId || ''} onChange={(e) => handleOrgChange(user.id, user.departmentId || null, e.target.value)} disabled={!user.departmentId}>
+                    <MenuItem value=""><em>미지정</em></MenuItem>
+                    {teams.filter(team => team.departmentId === user.departmentId).map((team) => (<MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>))}
+                  </Select>
+                </FormControl>
+              </TableCell>
+              <TableCell onClick={(e) => e.stopPropagation()}>
+                <FormControl size="small" sx={{ minWidth: 100 }}>
+                  <Select value={user.status} onChange={(e) => handleStatusChange(user.id, e.target.value as UserStatus)} renderValue={(s) => getStatusChip(s)}>
+                    <MenuItem value="PENDING">대기</MenuItem>
+                    <MenuItem value="APPROVED">승인</MenuItem>
+                    <MenuItem value="REJECTED">거절</MenuItem>
+                    <MenuItem value="SUSPENDED">정지</MenuItem>
+                  </Select>
+                </FormControl>
+              </TableCell>
+              <TableCell onClick={(e) => e.stopPropagation()}>
+                <Button size="small" onClick={() => { setSelectedUserId(user.id); setOpenDetailsModal(true); }}>{user.registeredCustomersCount}</Button>
+              </TableCell>
+              <TableCell align="right" onClick={(e) => e.stopPropagation()}>
+                <IconButton size="small" onClick={() => startOneOnOneChat(user.id)}><ChatIcon /></IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
+  const MobileView = () => (
+    <Box>
+      {users.map((user) => (
+        <Card key={user.id} sx={{ mb: 2 }}>
+          <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }} onClick={() => handleRowClick(user)}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{user.name} ({user.userId})</Typography>
+                <Link href={`tel:${user.phone}`} onClick={(e) => e.stopPropagation()}>{user.phone}</Link>
+              </Box>
+              <FormControl size="small" sx={{ minWidth: 100 }} onClick={(e) => e.stopPropagation()}>
+                <Select value={user.status} onChange={(e) => handleStatusChange(user.id, e.target.value as UserStatus)} renderValue={(s) => getStatusChip(s)}>
+                  <MenuItem value="PENDING">대기</MenuItem>
+                  <MenuItem value="APPROVED">승인</MenuItem>
+                  <MenuItem value="REJECTED">거절</MenuItem>
+                  <MenuItem value="SUSPENDED">정지</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: 1, mt: 2 }} onClick={(e) => e.stopPropagation()}>
+              <FormControl fullWidth size="small">
+                <Select value={user.userType} onChange={(e) => handleUserTypeChange(user.id, e.target.value as UserType)} displayEmpty>
+                  {UserTypeOptions.map((type) => (<MenuItem key={type} value={type}>{translateUserType(type)}</MenuItem>))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth size="small">
+                <Select value={user.departmentId || ''} onChange={(e) => handleOrgChange(user.id, e.target.value, null)} displayEmpty>
+                  <MenuItem value=""><em>부서 미지정</em></MenuItem>
+                  {departments.map((dept) => (<MenuItem key={dept.id} value={dept.id}>{dept.name}</MenuItem>))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth size="small" disabled={!user.departmentId}>
+                <Select value={user.teamId || ''} onChange={(e) => handleOrgChange(user.id, user.departmentId || null, e.target.value)} displayEmpty>
+                  <MenuItem value=""><em>팀 미지정</em></MenuItem>
+                  {teams.filter(team => team.departmentId === user.departmentId).map((team) => (<MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>))}
+                </Select>
+              </FormControl>
+            </Box>
+          </CardContent>
+          <CardActions sx={{ justifyContent: 'space-between', pt: 0 }}>
+            <Button size="small" onClick={(e) => { e.stopPropagation(); setSelectedUserId(user.id); setOpenDetailsModal(true); }}>
+              등록고객: {user.registeredCustomersCount}
+            </Button>
+            <IconButton size="small" onClick={(e) => { e.stopPropagation(); startOneOnOneChat(user.id); }}><ChatIcon /></IconButton>
+          </CardActions>
+        </Card>
+      ))}
+    </Box>
+  );
+
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -169,149 +292,7 @@ const AdminPage: React.FC = () => {
         <Button variant="contained" onClick={() => setOpenUserDialog(true)}>신규 사용자 등록</Button>
       </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>
-                <TableSortLabel
-                  active={sortConfig.field === 'userId'}
-                  direction={sortConfig.field === 'userId' ? sortConfig.order : 'asc'}
-                  onClick={() => handleSort('userId')}
-                >
-                  아이디
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>
-                <TableSortLabel
-                  active={sortConfig.field === 'name'}
-                  direction={sortConfig.field === 'name' ? sortConfig.order : 'asc'}
-                  onClick={() => handleSort('name')}
-                >
-                  이름
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>연락처</TableCell>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>직급</TableCell>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>
-                <TableSortLabel
-                  active={sortConfig.field === 'department'}
-                  direction={sortConfig.field === 'department' ? sortConfig.order : 'asc'}
-                  onClick={() => handleSort('department')}
-                >
-                  부서(본부)
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>
-                <TableSortLabel
-                  active={sortConfig.field === 'team'}
-                  direction={sortConfig.field === 'team' ? sortConfig.order : 'asc'}
-                  onClick={() => handleSort('team')}
-                >
-                  팀
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>상태</TableCell>
-              <TableCell sx={{ p: { xs: 1, sm: 2 } }}>
-                <TableSortLabel
-                  active={sortConfig.field === 'customerCount'}
-                  direction={sortConfig.field === 'customerCount' ? sortConfig.order : 'asc'}
-                  onClick={() => handleSort('customerCount')}
-                >
-                  고객등록수
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="right" sx={{ p: { xs: 1, sm: 2 } }}>작업</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow 
-                key={user.id} 
-                hover 
-                sx={{ cursor: 'pointer' }}
-                onClick={() => handleRowClick(user)}
-              >
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{user.userId}</TableCell>
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography component="span">{user.name}</Typography>
-                    {user.status === 'PENDING' && unreadNewUserMessages.has(user.name) && (
-                      <Typography variant="caption" color="secondary.main">
-                        {unreadNewUserMessages.get(user.name)}
-                      </Typography>
-                    )}
-                  </Box>
-                </TableCell>
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{user.phone}</TableCell>
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }} onClick={(e) => e.stopPropagation()}>
-                  <FormControl size="small" sx={{ minWidth: 120 }}>
-                    <Select
-                      value={user.userType}
-                      onChange={(e) => handleUserTypeChange(user.id, e.target.value as UserType)}
-                    >
-                      {UserTypeOptions.map((type) => (
-                        <MenuItem key={type} value={type}>
-                          {translateUserType(type)}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </TableCell>
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }} onClick={(e) => e.stopPropagation()}>
-                  <FormControl size="small" sx={{ minWidth: 120 }}>
-                    <Select
-                      value={user.departmentId || ''}
-                      onChange={(e) => handleOrgChange(user.id, e.target.value, null)}
-                    >
-                      <MenuItem value=""><em>미지정</em></MenuItem>
-                      {departments.map((dept) => (
-                        <MenuItem key={dept.id} value={dept.id}>
-                          {dept.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </TableCell>
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }} onClick={(e) => e.stopPropagation()}>
-                  <FormControl size="small" sx={{ minWidth: 120 }}>
-                    <Select
-                      value={user.teamId || ''}
-                      onChange={(e) => handleOrgChange(user.id, user.departmentId || null, e.target.value)}
-                      disabled={!user.departmentId}
-                    >
-                      <MenuItem value=""><em>미지정</em></MenuItem>
-                      {teams.filter(team => team.departmentId === user.departmentId).map((team) => (
-                        <MenuItem key={team.id} value={team.id}>
-                          {team.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </TableCell>
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }} onClick={(e) => e.stopPropagation()}>
-                  <FormControl size="small" sx={{ minWidth: 100 }}>
-                    <Select value={user.status} onChange={(e) => handleStatusChange(user.id, e.target.value as UserStatus)} renderValue={(s) => getStatusChip(s)}>
-                      <MenuItem value="PENDING">대기</MenuItem>
-                      <MenuItem value="APPROVED">승인</MenuItem>
-                      <MenuItem value="REJECTED">거절</MenuItem>
-                      <MenuItem value="SUSPENDED">정지</MenuItem>
-                    </Select>
-                  </FormControl>
-                </TableCell>
-                <TableCell sx={{ p: { xs: 1, sm: 2 } }} onClick={(e) => e.stopPropagation()}>
-                  <Button size="small" onClick={() => { setSelectedUserId(user.id); setOpenDetailsModal(true); }}>
-                    {user.registeredCustomersCount}
-                  </Button>
-                </TableCell>
-                <TableCell align="right" sx={{ p: { xs: 1, sm: 2 } }} onClick={(e) => e.stopPropagation()}>
-                  <IconButton size="small" onClick={() => startOneOnOneChat(user.id)}><ChatIcon /></IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {isMobile ? <MobileView /> : <DesktopView />}
 
       {selectedUserForLog && (
         <ActivityLogDialog
@@ -333,5 +314,3 @@ const AdminPage: React.FC = () => {
     </Box>
   );
 };
-
-export default AdminPage;

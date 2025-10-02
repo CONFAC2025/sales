@@ -13,6 +13,11 @@ import {
   TableRow,
   Paper,
   Chip,
+  useTheme,
+  useMediaQuery,
+  Card,
+  CardContent,
+  Link,
 } from '@mui/material';
 import { getOrganizationTree } from '../services/organizationService';
 import type { Department, Team } from '../services/organizationService';
@@ -58,6 +63,8 @@ const getStatusChip = (status: UserStatus) => {
 };
 
 const OrganizationPage: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [departments, setDepartments] = useState<Department[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -91,13 +98,107 @@ const OrganizationPage: React.FC = () => {
     return <CircularProgress />;
   }
 
+  const DesktopView = ({ departmentTeams, departmentUsers }: { departmentTeams: Team[], departmentUsers: User[] }) => (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>팀</TableCell>
+            <TableCell>ID</TableCell>
+            <TableCell>이름</TableCell>
+            <TableCell>직급</TableCell>
+            <TableCell>연락처</TableCell>
+            <TableCell>상태</TableCell>
+            <TableCell>고객등록수</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {departmentTeams.map((team) => {
+            const teamMembers = departmentUsers.filter(u => u.teamId === team.id);
+            return (
+              <React.Fragment key={team.id}>
+                {teamMembers.map((member, memberIndex) => (
+                  <TableRow key={member.id}>
+                    {memberIndex === 0 && (
+                      <TableCell rowSpan={teamMembers.length}>{team.name}</TableCell>
+                    )}
+                    <TableCell>{member.userId}</TableCell>
+                    <TableCell>{member.name}</TableCell>
+                    <TableCell>{translateUserType(member.userType)}</TableCell>
+                    <TableCell><Link href={`tel:${member.phone}`}>{member.phone}</Link></TableCell>
+                    <TableCell>{getStatusChip(member.status)}</TableCell>
+                    <TableCell>{member._count?.registeredCustomers || 0}</TableCell>
+                  </TableRow>
+                ))}
+              </React.Fragment>
+            );
+          })}
+          {departmentUsers.filter(u => !u.teamId).map((member, memberIndex) => (
+            <TableRow key={member.id}>
+              {memberIndex === 0 && (
+                <TableCell rowSpan={departmentUsers.filter(u => !u.teamId).length}>팀 미지정</TableCell>
+              )}
+              <TableCell>{member.userId}</TableCell>
+              <TableCell>{member.name}</TableCell>
+              <TableCell>{translateUserType(member.userType)}</TableCell>
+              <TableCell><Link href={`tel:${member.phone}`}>{member.phone}</Link></TableCell>
+              <TableCell>{getStatusChip(member.status)}</TableCell>
+              <TableCell>{member._count?.registeredCustomers || 0}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
+  const MobileView = ({ departmentTeams, departmentUsers }: { departmentTeams: Team[], departmentUsers: User[] }) => (
+    <Box>
+      {departmentTeams.map((team) => {
+        const teamMembers = departmentUsers.filter(u => u.teamId === team.id);
+        if (teamMembers.length === 0) return null;
+        return (
+          <Card key={team.id} sx={{ mb: 2 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>{team.name}</Typography>
+              {teamMembers.map(member => (
+                <Box key={member.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #eee', py: 1}}>
+                  <Box>
+                    <Typography variant="body1">{member.name} ({member.userId})</Typography>
+                    <Typography variant="body2" color="text.secondary">{translateUserType(member.userType)}</Typography>
+                    <Link href={`tel:${member.phone}`} variant="body2">{member.phone}</Link>
+                  </Box>
+                  {getStatusChip(member.status)}
+                </Box>
+              ))}
+            </CardContent>
+          </Card>
+        );
+      })}
+      <Card sx={{ mb: 2 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>팀 미지정</Typography>
+          {departmentUsers.filter(u => !u.teamId).map(member => (
+            <Box key={member.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #eee', py: 1}}>
+              <Box>
+                <Typography variant="body1">{member.name} ({member.userId})</Typography>
+                <Typography variant="body2" color="text.secondary">{translateUserType(member.userType)}</Typography>
+                <Link href={`tel:${member.phone}`} variant="body2">{member.phone}</Link>
+              </Box>
+              {getStatusChip(member.status)}
+            </Box>
+          ))}
+        </CardContent>
+      </Card>
+    </Box>
+  );
+
   return (
     <Box sx={{ width: '100%' }}>
       <Typography variant="h4" gutterBottom sx={{ p: 3 }}>
         조직 관리
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={selectedTab} onChange={handleChange} aria-label="department tabs">
+        <Tabs value={selectedTab} onChange={handleChange} aria-label="department tabs" variant={isMobile ? "scrollable" : "standard"} allowScrollButtonsMobile>
           {departments.map((dept) => (
             <Tab label={dept.name} key={dept.id} />
           ))}
@@ -109,57 +210,10 @@ const OrganizationPage: React.FC = () => {
 
         return (
           <TabPanel value={selectedTab} index={index} key={dept.id}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ p: { xs: 1, sm: 2 } }}>팀</TableCell>
-                    <TableCell sx={{ p: { xs: 1, sm: 2 } }}>ID</TableCell>
-                    <TableCell sx={{ p: { xs: 1, sm: 2 } }}>이름</TableCell>
-                    <TableCell sx={{ p: { xs: 1, sm: 2 } }}>직급</TableCell>
-                    <TableCell sx={{ p: { xs: 1, sm: 2 } }}>연락처</TableCell>
-                    <TableCell sx={{ p: { xs: 1, sm: 2 } }}>상태</TableCell>
-                    <TableCell sx={{ p: { xs: 1, sm: 2 } }}>고객등록수</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {departmentTeams.map((team) => {
-                    const teamMembers = departmentUsers.filter(u => u.teamId === team.id);
-                    return (
-                      <React.Fragment key={team.id}>
-                        {teamMembers.map((member, memberIndex) => (
-                          <TableRow key={member.id}>
-                            {memberIndex === 0 && (
-                              <TableCell rowSpan={teamMembers.length} sx={{ p: { xs: 1, sm: 2 } }}>{team.name}</TableCell>
-                            )}
-                            <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member.userId}</TableCell>
-                            <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member.name}</TableCell>
-                            <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{translateUserType(member.userType)}</TableCell>
-                            <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member.phone}</TableCell>
-                            <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{getStatusChip(member.status)}</TableCell>
-                            <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member._count?.registeredCustomers || 0}</TableCell>
-                          </TableRow>
-                        ))}
-                      </React.Fragment>
-                    );
-                  })}
-                  {/* Render users not in any team but in this department */}
-                  {departmentUsers.filter(u => !u.teamId).map((member, memberIndex) => (
-                    <TableRow key={member.id}>
-                      {memberIndex === 0 && (
-                        <TableCell rowSpan={departmentUsers.filter(u => !u.teamId).length} sx={{ p: { xs: 1, sm: 2 } }}>팀 미지정</TableCell>
-                      )}
-                      <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member.userId}</TableCell>
-                      <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member.name}</TableCell>
-                      <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{translateUserType(member.userType)}</TableCell>
-                      <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member.phone}</TableCell>
-                      <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{getStatusChip(member.status)}</TableCell>
-                      <TableCell sx={{ p: { xs: 1, sm: 2 } }}>{member._count?.registeredCustomers || 0}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            {isMobile ? 
+              <MobileView departmentTeams={departmentTeams} departmentUsers={departmentUsers} /> : 
+              <DesktopView departmentTeams={departmentTeams} departmentUsers={departmentUsers} />
+            }
           </TabPanel>
         );
       })}
