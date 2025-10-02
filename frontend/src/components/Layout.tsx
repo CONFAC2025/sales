@@ -182,7 +182,7 @@ const Layout: React.FC = () => {
             <Tab 
               label={
                 <Badge badgeContent={unreadCount} color="error">
-                  <Typography sx={{ fontSize: isMobile ? '0.8rem' : '1.2rem' }}>대시보드</Typography>
+                  <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>대시보드</Typography>
                 </Badge>
               } 
               value="/" 
@@ -191,7 +191,7 @@ const Layout: React.FC = () => {
             <Tab 
               label={
                 <Badge badgeContent={unreadCount} color="error">
-                  <Typography sx={{ fontSize: isMobile ? '0.8rem' : '1.2rem' }}>고객 관리</Typography>
+                  <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>고객 관리</Typography>
                 </Badge>
               } 
               value="/customers" 
@@ -200,7 +200,7 @@ const Layout: React.FC = () => {
             <Tab 
               label={
                 <Badge badgeContent={totalUnreadCount} color="error"> {/* This one is for CHAT only */}
-                  <Typography sx={{ fontSize: isMobile ? '0.8rem' : '1.2rem' }}>채팅</Typography>
+                  <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>채팅</Typography>
                 </Badge>
               } 
               value="/chat" 
@@ -209,7 +209,7 @@ const Layout: React.FC = () => {
             {isAdmin && <Tab 
               label={
                 <Badge badgeContent={unreadCount} color="error">
-                  <Typography sx={{ fontSize: isMobile ? '0.8rem' : '1.2rem' }}>사용자 관리</Typography>
+                  <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>사용자 관리</Typography>
                 </Badge>
               } 
               value="/admin/users" 
@@ -218,7 +218,7 @@ const Layout: React.FC = () => {
             {isAdmin && <Tab 
               label={
                 <Badge badgeContent={unreadCount} color="error">
-                  <Typography sx={{ fontSize: isMobile ? '0.8rem' : '1.2rem' }}>조직 관리</Typography>
+                  <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>조직 관리</Typography>
                 </Badge>
               } 
               value="/admin/organization" 

@@ -234,17 +234,22 @@ const CustomersPage: React.FC = () => {
   const MobileView = () => (
     <Box>
       {customers && customers.map((customer) => (
-        <Card key={customer.id} sx={{ mb: 2 }} onClick={() => handleRowClick(customer)}>
+        <Card key={customer.id} sx={{ mb: 2 }} >
           <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{customer.name}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <Link href={`tel:${customer.phone}`} onClick={(e) => e.stopPropagation()}>{customer.phone}</Link>
-                </Typography>
+                <Button size="small" variant="outlined" sx={{ p: '0 4px', height: '20px', fontSize: '0.6rem' }} onClick={(e) => {e.stopPropagation(); handleRowClick(customer)}}>
+                  변경이력
+                </Button>
               </Box>
-              {getStatusChip(customer.status)}
+              <Typography variant="body2" color="text.secondary">
+                <Link href={`tel:${customer.phone}`} onClick={(e) => e.stopPropagation()}>{customer.phone}</Link>
+              </Typography>
             </Box>
+            
+            {getStatusChip(customer.status)}
+
             {unreadCustomerUpdates.has(`/customers/${customer.id}`) && (
               <Typography variant="caption" color="secondary.main" sx={{ display: 'block', mt: 0.5}}>
                 {unreadCustomerUpdates.get(`/customers/${customer.id}`)}
@@ -284,7 +289,7 @@ const CustomersPage: React.FC = () => {
       <Paper sx={{ p: 2, mb: 3 }}>
         <Typography variant="h6" gutterBottom>필터</Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: isMobile ? 'stretch' : 'center', flexDirection: isMobile ? 'column' : 'row' }}>
             <FormControl sx={{ minWidth: 150 }} size="small">
               <InputLabel>유입 경로</InputLabel>
               <Select value={filterSource} label="유입 경로" onChange={(e) => setFilterSource(e.target.value)}>
