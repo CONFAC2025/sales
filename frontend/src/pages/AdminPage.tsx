@@ -314,3 +314,5 @@ const AdminPage: React.FC = () => {
     </Box>
   );
 };
+
+export default AdminPage;
