@@ -170,14 +170,8 @@ const Layout: React.FC = () => {
             value={getCurrentTab()} 
             onChange={handleTabChange} 
             textColor="inherit" 
-            variant={isMobile ? "fullWidth" : "standard"}
-            centered
-            sx={{
-              '& .MuiTab-root': { // Target all Tab components within these Tabs
-                minWidth: 'auto',
-                p: 1,
-              }
-            }}
+            variant="scrollable"
+            allowScrollButtonsMobile
           >
             <Tab 
               label={

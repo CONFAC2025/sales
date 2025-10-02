@@ -38,7 +38,7 @@ const translatePotentialToKorean = (potential: PotentialLevel) => {
 const CustomersPage: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { user: currentUser, isAuthenticated } = useAuth();
   const { sendSystemMessageToUser } = useChat();
   const { notifications, markAsReadByLink } = useNotifications();
@@ -289,15 +289,14 @@ const CustomersPage: React.FC = () => {
       <Paper sx={{ p: 2, mb: 3 }}>
         <Typography variant="h6" gutterBottom>필터</Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: isMobile ? 'stretch' : 'center', flexDirection: isMobile ? 'column' : 'row' }}>
-            <FormControl sx={{ minWidth: 150 }} size="small">
-              <InputLabel>유입 경로</InputLabel>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'center' }}>
+            <FormControl sx={{ flex: '1 1 140px' }} size="small">
               <Select value={filterSource} label="유입 경로" onChange={(e) => setFilterSource(e.target.value)}>
                 <MenuItem value=""><em>전체</em></MenuItem>
                 {uniqueSources.map(source => <MenuItem key={source} value={source}>{source}</MenuItem>)}
               </Select>
             </FormControl>
-            <FormControl sx={{ minWidth: 120 }} size="small">
+            <FormControl sx={{ flex: '1 1 120px' }} size="small">
               <InputLabel>성향</InputLabel>
               <Select value={filterPotential} label="성향" onChange={(e) => setFilterPotential(e.target.value as PotentialLevel)}>
                 <MenuItem value=""><em>전체</em></MenuItem>
@@ -306,22 +305,22 @@ const CustomersPage: React.FC = () => {
                 <MenuItem value="LOW">하</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ minWidth: 120 }} size="small">
+            <FormControl sx={{ flex: '1 1 120px' }} size="small">
               <InputLabel>상태</InputLabel>
               <Select value={filterStatus} label="상태" onChange={(e) => setFilterStatus(e.target.value as CustomerStatus)}>
                 <MenuItem value=""><em>전체</em></MenuItem>
                 {CustomerStatusOptions.map(s => <MenuItem key={s} value={s}>{translateStatusToKorean(s)}</MenuItem>)}
               </Select>
             </FormControl>
-            <FormControl sx={{ minWidth: 150 }} size="small">
+            <FormControl sx={{ flex: '1 1 150px' }} size="small">
               <InputLabel>등록자 이름</InputLabel>
               <Select value={filterRegisteredByName} label="등록자 이름" onChange={(e) => setFilterRegisteredByName(e.target.value)}>
                 <MenuItem value=""><em>전체</em></MenuItem>
                 {users.map(user => <MenuItem key={user.id} value={user.name}>{user.name}</MenuItem>)}
               </Select>
             </FormControl>
-            <TextField label="등록일 시작" type="date" size="small" InputLabelProps={{ shrink: true }} value={filterRegistrationDateStart} onChange={(e) => setFilterRegistrationDateStart(e.target.value)} />
-            <TextField label="등록일 종료" type="date" size="small" InputLabelProps={{ shrink: true }} value={filterRegistrationDateEnd} onChange={(e) => setFilterRegistrationDateEnd(e.target.value)} />
+            <TextField label="등록일 시작" type="date" size="small" InputLabelProps={{ shrink: true }} value={filterRegistrationDateStart} onChange={(e) => setFilterRegistrationDateStart(e.target.value)} sx={{ flex: '1 1 160px' }} />
+            <TextField label="등록일 종료" type="date" size="small" InputLabelProps={{ shrink: true }} value={filterRegistrationDateEnd} onChange={(e) => setFilterRegistrationDateEnd(e.target.value)} sx={{ flex: '1 1 160px' }} />
             <Button variant="contained" onClick={fetchCustomers}>검색</Button>
           </Box>
         </Box>

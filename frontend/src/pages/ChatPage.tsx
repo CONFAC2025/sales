@@ -7,7 +7,7 @@ import { useChat } from '../contexts/ChatContext';
 const ChatPage: React.FC = () => {
   const { openRoomIds, rooms, openRoom, closeRoom, getRoomDisplayName } = useChat();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const activeRoomId = openRoomIds.length > 0 ? openRoomIds[openRoomIds.length - 1] : null;
 
