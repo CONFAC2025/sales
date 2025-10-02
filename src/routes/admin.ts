@@ -29,7 +29,7 @@ interface AdminUsersQuery {
 
 export default async function (fastify: FastifyInstance, opts: FastifyPluginOptions) {
   // 이 라우트 그룹의 모든 경로는 ADMIN_STAFF만 접근 가능
-  fastify.addHook('preHandler', authMiddleware([UserType.ADMIN_STAFF]));
+  fastify.addHook('preHandler', authMiddleware([UserType.ADMIN_STAFF, UserType.GENERAL_HQ_MANAGER]));
 
   // 사용자 승인 라우트
   fastify.post('/users/approve', async (request: FastifyRequest<{ Body: ApproveUserBody }>, reply: FastifyReply) => {

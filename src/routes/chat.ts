@@ -19,7 +19,8 @@ export default async function (fastify: FastifyInstance, opts: FastifyPluginOpti
       UserType.TEAM_LEADER, 
       UserType.SALES_STAFF,
       UserType.REAL_ESTATE,
-      UserType.PARTNER_STAFF
+      UserType.PARTNER_STAFF,
+      UserType.GENERAL_HQ_MANAGER
     ]));
 
     fastify.get('/subordinates', async (request, reply) => {
