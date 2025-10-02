@@ -1,16 +1,15 @@
 import React from 'react';
-import { Paper, Box, Typography, useTheme, useMediaQuery } from '@mui/material';
+import { Paper, Box, Typography, useTheme, useMediaQuery, Chip } from '@mui/material';
 import ChatRoomList from '../components/chat/ChatRoomList';
 import MessageView from '../components/chat/MessageView';
 import { useChat } from '../contexts/ChatContext';
 
 const ChatPage: React.FC = () => {
-  const { openRoomIds } = useChat();
+  const { openRoomIds, rooms, openRoom, closeRoom, getRoomDisplayName } = useChat();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // On mobile, only one room can be active. We'll use the last opened one.
-  const activeMobileRoomId = isMobile && openRoomIds.length > 0 ? openRoomIds[openRoomIds.length - 1] : null;
+  const activeRoomId = openRoomIds.length > 0 ? openRoomIds[openRoomIds.length - 1] : null;
 
   const DesktopLayout = () => (
     <Paper sx={{ display: 'flex', height: 'calc(100vh - 150px)', overflow: 'hidden' }}>
@@ -34,15 +33,35 @@ const ChatPage: React.FC = () => {
     </Paper>
   );
 
-  const MobileLayout = () => (
-    <Paper sx={{ height: 'calc(100vh - 120px)', overflow: 'hidden' }}>
-      {activeMobileRoomId ? (
-        <MessageView roomId={activeMobileRoomId} />
-      ) : (
-        <ChatRoomList />
-      )}
-    </Paper>
-  );
+  const MobileLayout = () => {
+    if (openRoomIds.length === 0) {
+      return <ChatRoomList />;
+    }
+
+    return (
+      <Box sx={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
+        <Paper square sx={{ flexShrink: 0, borderBottom: 1, borderColor: 'divider' }}>
+          <Box sx={{ display: 'flex', overflowX: 'auto', p: 1, gap: 1 }}>
+            {openRoomIds.map(id => {
+              const room = rooms.find(r => r.id === id);
+              if (!room) return null;
+              return (
+                <Chip
+                  key={id}
+                  label={getRoomDisplayName(room)}
+                  onClick={() => openRoom(id)}
+                  onDelete={() => closeRoom(id)}
+                  color={id === activeRoomId ? "primary" : "default"}
+                />
+              );
+            })}
+          </Box>
+        </Paper>
+        
+        {activeRoomId && <MessageView roomId={activeRoomId} />}
+      </Box>
+    );
+  };
 
   return isMobile ? <MobileLayout /> : <DesktopLayout />;
 };
