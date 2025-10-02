@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import type { Notification } from '../types/notification';
 import { getNotifications, pollNotifications } from '../services/notificationService';
