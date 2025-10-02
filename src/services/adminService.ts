@@ -358,6 +358,15 @@ export class AdminService {
         entityId: updatedUser.id,
         details: changes,
       });
+
+      // Notify the user whose organization was changed
+      const notification = await NotificationService.createNotification({
+        recipientId: updatedUser.id,
+        type: 'USER_PROFILE_UPDATE',
+        message: `관리자에 의해 회원님의 소속이 변경되었습니다.`,
+        link: '/my-page',
+      });
+      sendToUser(updatedUser.id, { type: 'NEW_NOTIFICATION', payload: notification });
     }
 
     return updatedUser;

@@ -178,10 +178,24 @@ export class ChatService {
       })
     ]);
 
-    // Send real-time message to all room members for debugging
+    // Send real-time message and create notification for all room members
     if (room) {
       for (const member of room.members) {
+        // Send real-time message
         sendToUser(member.userId, { type: 'NEW_MESSAGE', payload: newMessage });
+
+        // Create a persistent notification for the recipient, but not for the sender
+        if (member.userId !== senderId) {
+          NotificationService.createNotification({
+            recipientId: member.userId,
+            type: 'NEW_CHAT_MESSAGE',
+            message: `[${room.name || '대화'}] ${newMessage.sender.name}님으로부터 새 메시지`,
+            link: `/chat?roomId=${roomId}`,
+          }).then(notification => {
+            // Also send the notification via websocket for immediate UI update
+            sendToUser(member.userId, { type: 'NEW_NOTIFICATION', payload: notification });
+          });
+        }
       }
     }
 
