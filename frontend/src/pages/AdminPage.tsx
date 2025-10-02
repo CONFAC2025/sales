@@ -61,23 +61,12 @@ const AdminPage: React.FC = () => {
   const { startOneOnOneChat } = useChat();
   const { notifications } = useNotifications();
 
+  // NOTE: sortConfig is now moved into DesktopView
   const [sortConfig, setSortConfig] = useState<{ field: string; order: 'asc' | 'desc' }>({ field: 'createdAt', order: 'desc' });
-
-  const unreadNewUserMessages = useMemo(() => {
-    const messageMap = new Map<string, string>();
-    notifications
-      .filter(n => !n.isRead && typeof n.link === 'string' && n.link === '/admin/users')
-      .forEach(n => {
-        const match = n.message.match(/새로운 사용자 (.*?)님이/);
-        if (match && match[1]) {
-          messageMap.set(match[1], n.message);
-        }
-      });
-    return messageMap;
-  }, [notifications]);
 
   const fetchData = async () => {
     try {
+      // Pass sortConfig to the API call
       const [fetchedUsers, fetchedDepartments, fetchedTeams] = await Promise.all([
         getUsersForAdmin({}, sortConfig),
         getDepartments(),
@@ -94,11 +83,6 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [sortConfig]);
-
-  const handleSort = (field: string) => {
-    const isAsc = sortConfig.field === field && sortConfig.order === 'asc';
-    setSortConfig({ field, order: isAsc ? 'desc' : 'asc' });
-  };
 
   const handleStatusChange = async (userId: string, newStatus: UserStatus) => {
     try {
@@ -167,73 +151,100 @@ const AdminPage: React.FC = () => {
     return statusMap[status] || <Chip label={status} size="small" />;
   };
 
-  const DesktopView = () => (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>아이디</TableCell>
-            <TableCell>이름</TableCell>
-            <TableCell>연락처</TableCell>
-            <TableCell>직급</TableCell>
-            <TableCell>부서(본부)</TableCell>
-            <TableCell>팀</TableCell>
-            <TableCell>상태</TableCell>
-            <TableCell>고객등록수</TableCell>
-            <TableCell align="right">작업</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id} hover sx={{ cursor: 'pointer' }} onClick={() => handleRowClick(user)}>
-              <TableCell>{user.userId}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell><Link href={`tel:${user.phone}`} onClick={(e) => e.stopPropagation()}>{user.phone}</Link></TableCell>
-              <TableCell onClick={(e) => e.stopPropagation()}>
-                <FormControl size="small" sx={{ minWidth: 120 }}>
-                  <Select value={user.userType} onChange={(e) => handleUserTypeChange(user.id, e.target.value as UserType)}>
-                    {UserTypeOptions.map((type) => (<MenuItem key={type} value={type}>{translateUserType(type)}</MenuItem>))}
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell onClick={(e) => e.stopPropagation()}>
-                 <FormControl size="small" sx={{ minWidth: 120 }}>
+  const DesktopView = () => {
+    const handleSort = (field: string) => {
+      const isAsc = sortConfig.field === field && sortConfig.order === 'asc';
+      setSortConfig({ field, order: isAsc ? 'desc' : 'asc' });
+    };
+
+    const unreadNewUserMessages = useMemo(() => {
+      const messageMap = new Map<string, string>();
+      notifications
+        .filter(n => !n.isRead && typeof n.link === 'string' && n.link === '/admin/users')
+        .forEach(n => {
+          const match = n.message.match(/새로운 사용자 (.*?)님이/);
+          if (match && match[1]) {
+            messageMap.set(match[1], n.message);
+          }
+        });
+      return messageMap;
+    }, [notifications]);
+
+    return (
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell><TableSortLabel active={sortConfig.field === 'userId'} direction={sortConfig.order} onClick={() => handleSort('userId')}>아이디</TableSortLabel></TableCell>
+              <TableCell><TableSortLabel active={sortConfig.field === 'name'} direction={sortConfig.order} onClick={() => handleSort('name')}>이름</TableSortLabel></TableCell>
+              <TableCell>연락처</TableCell>
+              <TableCell>직급</TableCell>
+              <TableCell><TableSortLabel active={sortConfig.field === 'department'} direction={sortConfig.order} onClick={() => handleSort('department')}>부서(본부)</TableSortLabel></TableCell>
+              <TableCell><TableSortLabel active={sortConfig.field === 'team'} direction={sortConfig.order} onClick={() => handleSort('team')}>팀</TableSortLabel></TableCell>
+              <TableCell>상태</TableCell>
+              <TableCell><TableSortLabel active={sortConfig.field === 'customerCount'} direction={sortConfig.order} onClick={() => handleSort('customerCount')}>고객등록수</TableSortLabel></TableCell>
+              <TableCell align="right">작업</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id} hover sx={{ cursor: 'pointer' }} onClick={() => handleRowClick(user)}>
+                <TableCell>{user.userId}</TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography component="span">{user.name}</Typography>
+                    {user.status === 'PENDING' && unreadNewUserMessages.has(user.name) && (
+                      <Typography variant="caption" color="secondary.main">{unreadNewUserMessages.get(user.name)}</Typography>
+                    )}
+                  </Box>
+                </TableCell>
+                <TableCell><Link href={`tel:${user.phone}`} onClick={(e) => e.stopPropagation()}>{user.phone}</Link></TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <Select value={user.userType} onChange={(e) => handleUserTypeChange(user.id, e.target.value as UserType)}>
+                      {UserTypeOptions.map((type) => (<MenuItem key={type} value={type}>{translateUserType(type)}</MenuItem>))}
+                    </Select>
+                  </FormControl>
+                </TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <FormControl size="small" sx={{ minWidth: 120 }}>
                     <Select value={user.departmentId || ''} onChange={(e) => handleOrgChange(user.id, e.target.value, null)}>
                       <MenuItem value=""><em>미지정</em></MenuItem>
                       {departments.map((dept) => (<MenuItem key={dept.id} value={dept.id}>{dept.name}</MenuItem>))}
                     </Select>
                   </FormControl>
-              </TableCell>
-              <TableCell onClick={(e) => e.stopPropagation()}>
-                <FormControl size="small" sx={{ minWidth: 120 }}>
-                  <Select value={user.teamId || ''} onChange={(e) => handleOrgChange(user.id, user.departmentId || null, e.target.value)} disabled={!user.departmentId}>
-                    <MenuItem value=""><em>미지정</em></MenuItem>
-                    {teams.filter(team => team.departmentId === user.departmentId).map((team) => (<MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>))}
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell onClick={(e) => e.stopPropagation()}>
-                <FormControl size="small" sx={{ minWidth: 100 }}>
-                  <Select value={user.status} onChange={(e) => handleStatusChange(user.id, e.target.value as UserStatus)} renderValue={(s) => getStatusChip(s)}>
-                    <MenuItem value="PENDING">대기</MenuItem>
-                    <MenuItem value="APPROVED">승인</MenuItem>
-                    <MenuItem value="REJECTED">거절</MenuItem>
-                    <MenuItem value="SUSPENDED">정지</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell onClick={(e) => e.stopPropagation()}>
-                <Button size="small" onClick={() => { setSelectedUserId(user.id); setOpenDetailsModal(true); }}>{user.registeredCustomersCount}</Button>
-              </TableCell>
-              <TableCell align="right" onClick={(e) => e.stopPropagation()}>
-                <IconButton size="small" onClick={() => startOneOnOneChat(user.id)}><ChatIcon /></IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+                </TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <Select value={user.teamId || ''} onChange={(e) => handleOrgChange(user.id, user.departmentId || null, e.target.value)} disabled={!user.departmentId}>
+                      <MenuItem value=""><em>미지정</em></MenuItem>
+                      {teams.filter(team => team.departmentId === user.departmentId).map((team) => (<MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>))}
+                    </Select>
+                  </FormControl>
+                </TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <FormControl size="small" sx={{ minWidth: 100 }}>
+                    <Select value={user.status} onChange={(e) => handleStatusChange(user.id, e.target.value as UserStatus)} renderValue={(s) => getStatusChip(s)}>
+                      <MenuItem value="PENDING">대기</MenuItem>
+                      <MenuItem value="APPROVED">승인</MenuItem>
+                      <MenuItem value="REJECTED">거절</MenuItem>
+                      <MenuItem value="SUSPENDED">정지</MenuItem>
+                    </Select>
+                  </FormControl>
+                </TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <Button size="small" onClick={() => { setSelectedUserId(user.id); setOpenDetailsModal(true); }}>{user.registeredCustomersCount}</Button>
+                </TableCell>
+                <TableCell align="right" onClick={(e) => e.stopPropagation()}>
+                  <IconButton size="small" onClick={() => startOneOnOneChat(user.id)}><ChatIcon /></IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
   const MobileView = () => (
     <Box>
