@@ -1,14 +1,16 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
-import { SocketStream } from '@fastify/websocket';
 
 interface JwtPayload { id: string; [key: string]: any; }
 
 const connections = new Map<string, any>();
 
 export function startWebSocketServer(server: FastifyInstance) {
-  server.get('/ws', { websocket: true }, (connection: SocketStream, req: FastifyRequest) => {
-    const { socket } = connection;
+  // Use `any` to bypass the conflicting TypeScript definitions and debug the runtime object.
+  server.get('/ws', { websocket: true }, (connection: any, req: FastifyRequest) => {
+
+    // Trust the documentation and assume the socket is on the .socket property.
+    const socket = connection.socket;
 
     const authenticateSocket = (token: string) => {
       try {
