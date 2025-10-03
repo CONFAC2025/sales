@@ -27,7 +27,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
-import { useChat } from '../contexts/ChatContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import { updateSiteSettings } from '../services/siteSettingsService';
@@ -43,7 +42,6 @@ function a11yProps(index: string) {
 
 const Layout: React.FC = () => {
   const { user, logout } = useAuth();
-  const { totalUnreadCount } = useChat();
   const { settings, refetch } = useSiteSettings();
   const { notifications, unreadCount, markNotificationAsRead } = useNotifications();
   const navigate = useNavigate();
@@ -106,8 +104,6 @@ const Layout: React.FC = () => {
 
   const handleNotificationItemClick = (notificationId: string, link?: string) => {
     markNotificationAsRead(notificationId);
-    // Do not close the popover to allow marking multiple as read
-    // handleNotificationClose(); 
     if (link) {
       navigate(link);
     }
@@ -136,6 +132,10 @@ const Layout: React.FC = () => {
   };
 
   const isAdmin = user?.userType === 'ADMIN_STAFF';
+
+  // NEW: Separate notification counts by type
+  const chatNotifCount = notifications.filter(n => !n.isRead && n.link?.startsWith('/chat')).length;
+  const otherNotifCount = notifications.filter(n => !n.isRead && !n.link?.startsWith('/chat')).length;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -175,7 +175,7 @@ const Layout: React.FC = () => {
           >
             <Tab 
               label={
-                <Badge badgeContent={unreadCount} color="error">
+                <Badge badgeContent={otherNotifCount} color="error">
                   <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>대시보드</Typography>
                 </Badge>
               } 
@@ -184,7 +184,7 @@ const Layout: React.FC = () => {
             />
             <Tab 
               label={
-                <Badge badgeContent={unreadCount} color="error">
+                <Badge badgeContent={otherNotifCount} color="error">
                   <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>고객 관리</Typography>
                 </Badge>
               } 
@@ -193,7 +193,7 @@ const Layout: React.FC = () => {
             />
             <Tab 
               label={
-                <Badge badgeContent={totalUnreadCount} color="error"> {/* This one is for CHAT only */}
+                <Badge badgeContent={chatNotifCount} color="error">
                   <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>채팅</Typography>
                 </Badge>
               } 
@@ -202,7 +202,7 @@ const Layout: React.FC = () => {
             />
             {isAdmin && <Tab 
               label={
-                <Badge badgeContent={unreadCount} color="error">
+                <Badge badgeContent={otherNotifCount} color="error">
                   <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>사용자 관리</Typography>
                 </Badge>
               } 
@@ -211,12 +211,12 @@ const Layout: React.FC = () => {
             />}
             {isAdmin && <Tab 
               label={
-                <Badge badgeContent={unreadCount} color="error">
+                <Badge badgeContent={otherNotifCount} color="error">
                   <Typography sx={{ fontSize: isMobile ? '0.7rem' : '1.2rem' }}>조직 관리</Typography>
                 </Badge>
               } 
               value="/admin/organization" 
-              {...a11yProps('admin-org')} 
+              {...a11y_props('admin-org')} 
             />}
           </Tabs>
         </Box>
