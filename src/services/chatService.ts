@@ -1,6 +1,7 @@
 import { prisma } from '../utils/prisma';
 import { User, ChatRoom, Prisma, UserType, ChatMessage } from '@prisma/client';
 import { sendToUser } from '../websocket';
+import { NotificationService } from './notificationService';
 
 export class ChatService {
 
