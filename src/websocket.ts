@@ -1,29 +1,19 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
-
-// Define a type for the query string for type safety
-interface WebsocketRequest extends FastifyRequest {
-  query: {
-    token?: string;
-  };
-}
+import { WebSocket } from 'ws';
 
 interface JwtPayload { id: string; [key: string]: any; }
 
-// This map will store the actual WebSocket instances, keyed by userId
-const connections = new Map<string, any>();
+const connections = new Map<string, WebSocket>();
 
 export function startWebSocketServer(server: FastifyInstance) {
-  server.get('/ws', { websocket: true }, (connection, req: WebsocketRequest) => {
-    // The actual WebSocket object is on the `socket` property of the connection
-    const socket = connection.socket;
+  server.get('/ws', { websocket: true }, (socket: WebSocket, req: FastifyRequest) => {
 
     const authenticateSocket = (token: string) => {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
         connections.set(decoded.id, socket);
         console.log(`User ${decoded.id} connected via WebSocket.`);
-        // Optional: Send a success message back to the client
         socket.send(JSON.stringify({ type: 'AUTH_SUCCESS' }));
       } catch (err) {
         console.error('WebSocket authentication error:', err);
@@ -32,16 +22,16 @@ export function startWebSocketServer(server: FastifyInstance) {
       }
     };
 
-    // Attempt to authenticate from query string token first
-    if (req.query.token) {
-      authenticateSocket(req.query.token);
+    // The query is on the 'req' object. We need to cast it to access query properties.
+    const tokenFromQuery = (req.query as { token?: string }).token;
+    if (tokenFromQuery) {
+      authenticateSocket(tokenFromQuery);
     }
 
-    // The library uses the 'message' event, not 'data'
+    // The correct event name is 'message'
     socket.on('message', (message: Buffer) => {
       try {
         const data = JSON.parse(message.toString());
-        // If the socket is not yet authenticated, look for an AUTH message
         if (data.type === 'AUTH') {
           authenticateSocket(data.payload);
         }
@@ -51,7 +41,6 @@ export function startWebSocketServer(server: FastifyInstance) {
     });
 
     socket.on('close', () => {
-      // Find the user associated with this socket and remove them
       const userId = [...connections.entries()].find(([_, s]) => s === socket)?.[0];
       if (userId) {
         connections.delete(userId);
@@ -59,7 +48,7 @@ export function startWebSocketServer(server: FastifyInstance) {
       }
     });
 
-    socket.on('error', (error) => {
+    socket.on('error', (error: Error) => {
       console.error('WebSocket error:', error);
     });
   });
@@ -67,8 +56,7 @@ export function startWebSocketServer(server: FastifyInstance) {
 
 export function sendToUser(userId: string, message: any) {
   const socket = connections.get(userId);
-  // Check if the socket exists and is in the OPEN state
-  if (socket && socket.readyState === 1) { 
+  if (socket && socket.readyState === WebSocket.OPEN) {
     try {
         socket.send(JSON.stringify(message));
         console.log(`Sent message to ${userId}:`, message.type);
