@@ -66,6 +66,14 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         if (newNotifications.length > 0) {
           setNotifications(prev => [...newNotifications, ...prev]);
           setLatestDate(newNotifications[0].createdAt);
+
+          // Dispatch events for real-time updates in other contexts
+          for (const notif of newNotifications) {
+            if (notif.type === 'NEW_CHAT_MESSAGE') {
+              // This might need more payload data depending on what ChatContext expects
+              eventEmitter.dispatch('NEW_MESSAGE_FROM_NOTIFICATION', { roomId: notif.link?.split('=')[1] });
+            }
+          }
         }
       } catch (error) {
         console.error('Polling for notifications failed', error);
