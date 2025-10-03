@@ -1,36 +1,79 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
+import jwt from 'jsonwebtoken';
+
+// The connection object's type isn't exported, so we use `any` but know it has a `.ws` property.
+interface ConnectionStream { 
+  ws: any; 
+}
+
+interface JwtPayload { id: string; [key: string]: any; }
+
+const connections = new Map<string, any>();
 
 export function startWebSocketServer(server: FastifyInstance) {
-  server.get('/ws', { websocket: true }, (connection: any, req: FastifyRequest) => {
-    console.log('--- DEBUGGING WEBSOCKET CONNECTION ---');
-    console.log('Logging the raw connection object:');
-    // We try to serialize it to see its structure. If it has circular refs, it might fail.
+  server.get('/ws', { websocket: true }, (connection: ConnectionStream, req: FastifyRequest) => {
+    // The actual WebSocket instance is on the `.ws` property.
+    const socket = connection.ws;
+
+    const authenticateSocket = (token: string) => {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+        connections.set(decoded.id, socket);
+        console.log(`User ${decoded.id} connected via WebSocket.`);
+        socket.send(JSON.stringify({ type: 'AUTH_SUCCESS' }));
+      } catch (err) {
+        console.error('WebSocket authentication error:', err);
+        socket.send(JSON.stringify({ type: 'AUTH_FAILED' }));
+        socket.close();
+      }
+    };
+
     try {
-      console.log(JSON.stringify(connection, null, 2));
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const tokenFromQuery = url.searchParams.get('token');
+      if (tokenFromQuery) {
+        authenticateSocket(tokenFromQuery);
+      }
     } catch (e) {
-      console.log('Could not stringify connection object.');
+      console.error('Could not parse token from URL', e);
     }
 
-    console.log('Logging the keys of the connection object:');
-    try {
-      console.log(Object.keys(connection));
-    } catch (e) {
-      console.log('Could not get keys of connection object.');
-    }
-    console.log('--- END DEBUGGING ---');
+    socket.on('message', (message: Buffer) => {
+      try {
+        const data = JSON.parse(message.toString());
+        if (data.type === 'AUTH') {
+          authenticateSocket(data.payload);
+        }
+      } catch (err) {
+        console.error('Error processing message:', err);
+      }
+    });
 
-    // Close the connection immediately after logging to prevent further errors
-    // and to show the client that the connection is not stable.
-    if (connection.socket && typeof connection.socket.close === 'function') {
-        connection.socket.close();
-    } else if (typeof connection.close === 'function') {
-        connection.close();
-    }
+    socket.on('close', () => {
+      const userId = [...connections.entries()].find(([_, s]) => s === socket)?.[0];
+      if (userId) {
+        connections.delete(userId);
+        console.log(`User ${userId} disconnected.`);
+      }
+    });
+
+    socket.on('error', (error: Error) => {
+      console.error('WebSocket error:', error);
+    });
   });
 }
 
-// Empty sendToUser function to prevent other errors during this debug phase.
 export function sendToUser(userId: string, message: any) {
-  console.log(`[No-Op] Attempted to send message to ${userId}`);
-  return;
+  const socket = connections.get(userId);
+  if (socket && socket.readyState === 1) { // 1 is WebSocket.OPEN
+    try {
+        socket.send(JSON.stringify(message));
+        console.log(`Sent message to ${userId}:`, message.type);
+        return true;
+    } catch(e) {
+        console.error(`Failed to send message to ${userId}`, e);
+        return false;
+    }
+  }
+  return false;
 }
