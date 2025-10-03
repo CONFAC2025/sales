@@ -69,7 +69,6 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     if (isAuthenticated) {
       getMyChatRooms().then(setRooms).catch(console.error);
 
-      const handleNewMessage = (data: ChatMessage) => addMessageRef.current(data);
       const handleNewRoom = (data: ChatRoom) => addRoomRef.current(data);
       const handleRoomDeleted = (data: { roomId: string }) => removeRoomRef.current(data.roomId);
       const handleNewMessageFromNotification = ({ roomId }: { roomId: string }) => {
