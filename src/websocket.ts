@@ -1,18 +1,15 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
 
-// The connection object's type isn't exported, so we use `any` but know it has a `.ws` property.
-interface ConnectionStream { 
-  ws: any; 
-}
-
 interface JwtPayload { id: string; [key: string]: any; }
 
 const connections = new Map<string, any>();
 
 export function startWebSocketServer(server: FastifyInstance) {
-  server.get('/ws', { websocket: true }, (connection: ConnectionStream, req: FastifyRequest) => {
-    // The actual WebSocket instance is on the `.ws` property.
+  // Use `any` to bypass the conflicting TypeScript definitions and trust the debug log.
+  server.get('/ws', { websocket: true }, (connection: any, req: FastifyRequest) => {
+
+    // The debug log showed the actual socket is on the .ws property.
     const socket = connection.ws;
 
     const authenticateSocket = (token: string) => {
