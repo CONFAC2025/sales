@@ -22,10 +22,15 @@ export function startWebSocketServer(server: FastifyInstance) {
       }
     };
 
-    // The query is on the 'req' object. We need to cast it to access query properties.
-    const tokenFromQuery = (req.query as { token?: string }).token;
-    if (tokenFromQuery) {
-      authenticateSocket(tokenFromQuery);
+    // Robustly parse the token from the raw request URL
+    try {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const tokenFromQuery = url.searchParams.get('token');
+      if (tokenFromQuery) {
+        authenticateSocket(tokenFromQuery);
+      }
+    } catch (e) {
+      console.error('Could not parse token from URL', e);
     }
 
     // The correct event name is 'message'
