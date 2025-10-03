@@ -1,16 +1,13 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
+import { SocketStream } from '@fastify/websocket';
 
 interface JwtPayload { id: string; [key: string]: any; }
 
-// This map will store the actual WebSocket instances from connection.socket
 const connections = new Map<string, any>();
 
 export function startWebSocketServer(server: FastifyInstance) {
-  // The handler's first argument is a SocketStream object, not the socket itself.
-  server.get('/ws', { websocket: true }, (connection, req: FastifyRequest) => {
-
-    // The actual socket is on the `.socket` property of the connection stream.
+  server.get('/ws', { websocket: true }, (connection: SocketStream, req: FastifyRequest) => {
     const { socket } = connection;
 
     const authenticateSocket = (token: string) => {
@@ -26,7 +23,6 @@ export function startWebSocketServer(server: FastifyInstance) {
       }
     };
 
-    // Use the raw URL to parse the token, as req.query might be unreliable on upgrade requests.
     try {
       const url = new URL(req.url, `http://${req.headers.host}`);
       const tokenFromQuery = url.searchParams.get('token');
@@ -37,7 +33,6 @@ export function startWebSocketServer(server: FastifyInstance) {
       console.error('Could not parse token from URL', e);
     }
 
-    // The correct event name is 'message'.
     socket.on('message', (message: Buffer) => {
       try {
         const data = JSON.parse(message.toString());
