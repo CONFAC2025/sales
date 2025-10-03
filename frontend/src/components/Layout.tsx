@@ -216,7 +216,7 @@ const Layout: React.FC = () => {
                 </Badge>
               } 
               value="/admin/organization" 
-              {...a11y_props('admin-org')} 
+              {...a11yProps('admin-org')} 
             />}
           </Tabs>
         </Box>
