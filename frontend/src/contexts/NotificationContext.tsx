@@ -60,12 +60,12 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const connect = () => {
-      const wsUrl = `wss://sales-ofg0.onrender.com/ws`;
+      const wsUrl = `wss://sales-ofg0.onrender.com/ws?token=${token}`;
       ws.current = new WebSocket(wsUrl);
 
       ws.current.onopen = () => {
         console.log('WebSocket Connected');
-        // Send auth message
+        // Send auth message as required by the backend
         ws.current?.send(JSON.stringify({ type: 'AUTH', payload: token }));
       };
 
