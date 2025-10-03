@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
-import { WebSocket } from 'ws';
+import { WebSocket, Server } from 'ws';
 
 interface JwtPayload { id: string; [key: string]: any; }
 
@@ -10,6 +10,7 @@ export function startWebSocketServer(server: FastifyInstance) {
   server.ready(err => {
     if (err) throw err;
 
+    // The module augmentation now correctly types `server.ws` as a WebSocket Server
     server.ws.on('connection', (socket: WebSocket, req: FastifyRequest) => {
       const authenticateSocket = (token: string) => {
         try {
