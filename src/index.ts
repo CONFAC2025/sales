@@ -1,6 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import websocket from '@fastify/websocket';
+import fastifyWs from 'fastify-ws';
 import multipart from '@fastify/multipart';
 import staticPlugin from '@fastify/static';
 import path from 'path';
@@ -43,7 +43,7 @@ server.addHook('preHandler', (request, reply, done) => {
   }
   done();
 });
-server.register(websocket);
+server.register(fastifyWs);
 server.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } });
 server.register(staticPlugin, {
   root: path.join(__dirname, '..', 'uploads'),
