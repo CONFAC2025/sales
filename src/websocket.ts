@@ -1,13 +1,17 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
-import { WebSocket } from 'ws';
 
 interface JwtPayload { id: string; [key: string]: any; }
 
-const connections = new Map<string, WebSocket>();
+// This map will store the actual WebSocket instances from connection.socket
+const connections = new Map<string, any>();
 
 export function startWebSocketServer(server: FastifyInstance) {
-  server.get('/ws', { websocket: true }, (socket: WebSocket, req: FastifyRequest) => {
+  // The handler's first argument is a SocketStream object, not the socket itself.
+  server.get('/ws', { websocket: true }, (connection, req: FastifyRequest) => {
+
+    // The actual socket is on the `.socket` property of the connection stream.
+    const { socket } = connection;
 
     const authenticateSocket = (token: string) => {
       try {
@@ -22,7 +26,7 @@ export function startWebSocketServer(server: FastifyInstance) {
       }
     };
 
-    // Robustly parse the token from the raw request URL
+    // Use the raw URL to parse the token, as req.query might be unreliable on upgrade requests.
     try {
       const url = new URL(req.url, `http://${req.headers.host}`);
       const tokenFromQuery = url.searchParams.get('token');
@@ -33,7 +37,7 @@ export function startWebSocketServer(server: FastifyInstance) {
       console.error('Could not parse token from URL', e);
     }
 
-    // The correct event name is 'message'
+    // The correct event name is 'message'.
     socket.on('message', (message: Buffer) => {
       try {
         const data = JSON.parse(message.toString());
@@ -61,7 +65,7 @@ export function startWebSocketServer(server: FastifyInstance) {
 
 export function sendToUser(userId: string, message: any) {
   const socket = connections.get(userId);
-  if (socket && socket.readyState === WebSocket.OPEN) {
+  if (socket && socket.readyState === 1) { // 1 is WebSocket.OPEN
     try {
         socket.send(JSON.stringify(message));
         console.log(`Sent message to ${userId}:`, message.type);
