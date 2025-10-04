@@ -188,15 +188,21 @@ export class ChatService {
 
         // Create a persistent notification for the recipient, but not for the sender
         if (member.userId !== senderId) {
-          NotificationService.createNotification({
-            recipientId: member.userId,
-            type: 'NEW_CHAT_MESSAGE',
-            message: `[${room.name || '대화'}] ${newMessage.sender.name}님으로부터 새 메시지`,
-            link: `/chat?roomId=${roomId}`,
-          }).then(notification => {
-            // Also send the notification via websocket for immediate UI update
-            sendToUser(member.userId, { type: 'NEW_NOTIFICATION', payload: notification });
-          });
+          // Use a self-invoking async function to handle notifications without blocking the loop
+          (async () => {
+            try {
+              const notification = await NotificationService.createNotification({
+                recipientId: member.userId,
+                type: 'NEW_CHAT_MESSAGE',
+                message: `[${room.name || '대화'}] ${newMessage.sender.name}님으로부터 새 메시지`,
+                link: `/chat?roomId=${roomId}`,
+              });
+              // Also send the notification via websocket for immediate UI update
+              sendToUser(member.userId, { type: 'NEW_NOTIFICATION', payload: notification });
+            } catch (error) {
+              console.error(`Failed to create or send notification for user ${member.userId}:`, error);
+            }
+          })();
         }
       }
     }
