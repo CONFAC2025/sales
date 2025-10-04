@@ -100,8 +100,8 @@ export default async function (fastify: FastifyInstance, opts: FastifyPluginOpti
 
     fastify.post('/messages', async (request, reply) => {
       const userPayload = request.user!;
-      const { roomId, content, fileUrl, fileType } = request.body as { roomId: string, content: string, fileUrl?: string, fileType?: string };
-      const message = await ChatService.saveMessage(roomId, userPayload.id, content, fileUrl, fileType);
+      const { roomId, content, fileUrl, fileType, fileName } = request.body as { roomId: string, content: string, fileUrl?: string, fileType?: string, fileName?: string };
+      const message = await ChatService.saveMessage(roomId, userPayload.id, content, fileUrl, fileType, fileName);
       reply.code(201).send({ success: true, data: message });
     });
   });

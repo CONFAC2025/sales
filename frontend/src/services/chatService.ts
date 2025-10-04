@@ -60,9 +60,10 @@ export const sendMessage = async (roomId: string, content: string, file?: File):
   }
   const response = await api.post('/chat/messages', { 
     roomId, 
-    content: file ? file.name : content, 
+    content, 
     fileUrl: filePayload?.url, 
-    fileType: filePayload?.type 
+    fileType: filePayload?.type, 
+    fileName: filePayload?.name
   });
   return response.data.data;
 };

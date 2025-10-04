@@ -158,13 +158,14 @@ export class ChatService {
   /**
    * Save a new chat message and send it to room members.
    */
-  public static async saveMessage(roomId: string, senderId: string, content: string, fileUrl?: string, fileType?: string): Promise<ChatMessage> {
+  public static async saveMessage(roomId: string, senderId: string, content: string, fileUrl?: string, fileType?: string, fileName?: string): Promise<ChatMessage> {
     const [newMessage, room] = await prisma.$transaction([
       prisma.chatMessage.create({
         data: {
           content,
           fileUrl,
           fileType,
+          fileName,
           room: { connect: { id: roomId } },
           sender: { connect: { id: senderId } },
         },

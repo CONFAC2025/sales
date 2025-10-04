@@ -49,8 +49,6 @@ server.register(staticPlugin, {
   prefix: '/uploads/',
 });
 
-initializeWebSocket(server);
-
 server.register(authRoutes, { prefix: '/api/auth' });
 server.register(adminRoutes, { prefix: '/api/admin' });
 server.register(customerRoutes, { prefix: '/api/customers' });
@@ -69,6 +67,7 @@ const start = async () => {
     console.log(`Attempting to listen on ${host}:${port}`);
     await server.listen({ port, host });
     console.log(`🚀 Server listening on port ${port}`);
+    initializeWebSocket(server);
   } catch (err) {
     server.log.error(err);
     process.exit(1);
