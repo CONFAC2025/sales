@@ -42,6 +42,7 @@ import ActivityLogDialog from '../components/ActivityLogDialog';
 import toast from 'react-hot-toast';
 import { useChat } from '../contexts/ChatContext';
 import { useNotifications } from '../contexts/NotificationContext';
+import { useSearchParams } from 'react-router-dom';
 import { translateUserType } from '../utils/user';
 
 const AdminPage: React.FC = () => {
@@ -55,11 +56,13 @@ const AdminPage: React.FC = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [openManagerDialog, setOpenManagerDialog] = useState(false);
-  const [selectedUserForManager, _setSelectedUserForManager] = useState<UserForAdminResponse | null>(null);
+  const [_selectedUserForManager, _setSelectedUserForManager] = useState<UserForAdminResponse | null>(null);
   const [logDialogOpen, setLogDialogOpen] = useState(false);
   const [selectedUserForLog, setSelectedUserForLog] = useState<UserForAdminResponse | null>(null);
   const { startOneOnOneChat } = useChat();
-  const { notifications } = useNotifications();
+  const { markAsReadByLink } = useNotifications();
+  const [searchParams] = useSearchParams();
+  const highlightedUserId = searchParams.get('highlight');
 
   // NOTE: sortConfig is now moved into DesktopView
   const [sortConfig, setSortConfig] = useState<{ field: string; order: 'asc' | 'desc' }>({ field: 'createdAt', order: 'desc' });
@@ -82,6 +85,8 @@ const AdminPage: React.FC = () => {
 
   useEffect(() => {
     fetchData();
+    // Mark notifications related to this page as read
+    markAsReadByLinkPrefix('/admin');
   }, [sortConfig]);
 
   const handleStatusChange = async (userId: string, newStatus: UserStatus) => {
@@ -188,8 +193,15 @@ const AdminPage: React.FC = () => {
           </TableHead>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id} hover sx={{ cursor: 'pointer' }} onClick={() => handleRowClick(user)}>
-                <TableCell>{user.userId}</TableCell>
+              <TableRow 
+                key={user.id} 
+                hover 
+                sx={{
+                  cursor: 'pointer',
+                  ...(user.id === highlightedUserId && { backgroundColor: theme.palette.action.hover })
+                }} 
+                onClick={() => handleRowClick(user)}
+              >                <TableCell>{user.userId}</TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography component="span">{user.name}</Typography>

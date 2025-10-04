@@ -144,9 +144,16 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     try {
       await apiDeleteChatRoom(roomId);
       removeRoom(roomId);
+      toast.success('채팅방을 삭제했습니다.');
       return true;
-    } catch (error) {
-      console.error('Failed to delete room', error);
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        toast.error('이미 삭제된 채팅방입니다.');
+        removeRoom(roomId); // Also remove from local state
+      } else {
+        toast.error('채팅방 삭제에 실패했습니다.');
+        console.error('Failed to delete room', error);
+      }
       return false;
     }
   };

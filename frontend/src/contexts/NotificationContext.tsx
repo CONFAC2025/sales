@@ -29,7 +29,10 @@ interface NotificationContextType {
   unreadCount: number;
   markNotificationAsRead: (notificationId: string) => void;
   markAsReadByLink: (link: string) => void;
+  markAsReadByLinkPrefix: (prefix: string) => void;
 }
+
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
@@ -135,8 +138,27 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const markAsReadByLinkPrefix = async (prefix: string) => {
+    const notificationsToUpdate = notifications.filter(
+      n => n.link?.startsWith(prefix) && !n.isRead
+    );
+    if (notificationsToUpdate.length === 0) return;
+
+    const originalNotifications = notifications;
+    setNotifications(prev => 
+      prev.map(n => n.link?.startsWith(prefix) ? { ...n, isRead: true } : n)
+    );
+
+    try {
+      await Promise.all(notificationsToUpdate.map(n => markAsRead(n.id)));
+    } catch (error) {
+      console.error('Failed to mark notifications by link prefix as read', error);
+      setNotifications(originalNotifications); // Revert on error
+    }
+  };
+
   return (
-    <NotificationContext.Provider value={{ notifications, unreadCount, markNotificationAsRead, markAsReadByLink }}>
+    <NotificationContext.Provider value={{ notifications, unreadCount, markNotificationAsRead, markAsReadByLink, markAsReadByLinkPrefix }}>
       {children}
     </NotificationContext.Provider>
   );

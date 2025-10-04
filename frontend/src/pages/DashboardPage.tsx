@@ -156,7 +156,7 @@ const DashboardPage: React.FC = () => {
         <Typography variant="h4" gutterBottom sx={{ mb: 2 }}>
           {user?.name}님, 환영합니다!
         </Typography>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} sm={6} md={3}><StatCard title="총 고객 수" value={totalCustomers} /></Grid>
           <Grid item xs={12} sm={6} md={3}><StatCard title="계약 고객 수" value={contractedCustomers} /></Grid>
           

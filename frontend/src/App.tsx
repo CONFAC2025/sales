@@ -8,6 +8,7 @@ import CustomersPage from './pages/CustomersPage';
 import CreateCustomerPage from './pages/CreateCustomerPage';
 import EditCustomerPage from './pages/EditCustomerPage';
 import ChatPage from './pages/ChatPage';
+import MyPage from './pages/MyPage';
 import PrivateRoute from './components/PrivateRoute';
 import Layout from './components/Layout';
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/customers/new" element={<CreateCustomerPage />} />
           <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/my-page" element={<MyPage />} />
         </Route>
       </Route>
     </Routes>

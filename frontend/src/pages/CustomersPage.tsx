@@ -106,6 +106,7 @@ const CustomersPage: React.FC = () => {
 
   useEffect(() => {
     fetchInitialData();
+    markAsReadByLinkPrefix('/customers');
   }, [isAuthenticated]);
 
   const uniqueSources = useMemo(() => 

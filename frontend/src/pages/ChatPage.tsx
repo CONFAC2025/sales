@@ -7,17 +7,17 @@ import { useNotifications } from '../contexts/NotificationContext';
 
 const ChatPage: React.FC = () => {
   const { openRoomIds, rooms, openRoom, closeRoom, getRoomDisplayName } = useChat();
-  const { markAsReadByLink } = useNotifications();
+  const { markAsReadByLinkPrefix } = useNotifications();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const activeRoomId = openRoomIds.length > 0 ? openRoomIds[openRoomIds.length - 1] : null;
 
   useEffect(() => {
     if (activeRoomId) {
-      markAsReadByLink(`/chat?roomId=${activeRoomId}`);
+      markAsReadByLinkPrefix(`/chat?roomId=${activeRoomId}`);
     }
-  }, [activeRoomId, markAsReadByLink]);
+  }, [activeRoomId, markAsReadByLinkPrefix]);
 
   const DesktopLayout = () => (
     <Paper sx={{ display: 'flex', height: 'calc(100vh - 150px)', overflow: 'hidden' }}>

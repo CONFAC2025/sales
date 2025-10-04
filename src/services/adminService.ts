@@ -163,7 +163,7 @@ export class AdminService {
         recipientId: admin.id,
         type: 'NEW_USER',
         message: `새로운 사용자 ${newUser.name}님이 가입했습니다.`,
-        link: `/admin/users`,
+        link: `/admin/users?highlight=${newUser.id}`,
       });
       sendToUser(admin.id, { type: 'NEW_NOTIFICATION', payload: notification });
     }
@@ -213,7 +213,7 @@ export class AdminService {
       recipientId: userId,
       type: 'USER_STATUS_UPDATE',
       message: `회원님의 계정 상태가 '${userStatusToKorean(status)}'으로 변경되었습니다.`,
-      link: `/admin/users`,
+      link: `/my-page`,
     });
     sendToUser(userId, { type: 'NEW_NOTIFICATION', payload: notification });
 
