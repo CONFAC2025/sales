@@ -34,6 +34,11 @@ server.register(staticPlugin, {
   prefix: '/uploads/',
 });
 
+// Health check route for Render
+server.get('/', async (request, reply) => {
+  reply.send({ status: 'ok' });
+});
+
 server.register(authRoutes, { prefix: '/api/auth' });
 server.register(adminRoutes, { prefix: '/api/admin' });
 server.register(customerRoutes, { prefix: '/api/customers' });
