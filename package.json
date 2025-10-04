@@ -20,6 +20,7 @@
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.2",
     "fastify": "^5.6.1",
+    "fastify-ws": "^1.0.3",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3",
     "ws": "^8.18.3"

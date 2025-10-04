@@ -69,16 +69,22 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     if (isAuthenticated) {
       getMyChatRooms().then(setRooms).catch(console.error);
 
-      const handleNewMessage = (data: ChatMessage) => addMessageRef.current(data);
       const handleNewRoom = (data: ChatRoom) => addRoomRef.current(data);
       const handleRoomDeleted = (data: { roomId: string }) => removeRoomRef.current(data.roomId);
+      const handleNewMessageFromNotification = ({ roomId }: { roomId: string }) => {
+        if (roomId) {
+          getMessagesForRoom(roomId)
+            .then(fetchedMessages => setMessages(prev => ({ ...prev, [roomId]: fetchedMessages })))
+            .catch(console.error);
+        }
+      };
 
-      eventEmitter.subscribe('NEW_MESSAGE', handleNewMessage);
+      eventEmitter.subscribe('NEW_MESSAGE_FROM_NOTIFICATION', handleNewMessageFromNotification);
       eventEmitter.subscribe('NEW_CHAT_ROOM', handleNewRoom);
       eventEmitter.subscribe('CHAT_ROOM_DELETED', handleRoomDeleted);
 
       return () => {
-        eventEmitter.unsubscribe('NEW_MESSAGE', handleNewMessage);
+        eventEmitter.unsubscribe('NEW_MESSAGE_FROM_NOTIFICATION', handleNewMessageFromNotification);
         eventEmitter.unsubscribe('NEW_CHAT_ROOM', handleNewRoom);
         eventEmitter.unsubscribe('CHAT_ROOM_DELETED', handleRoomDeleted);
       };

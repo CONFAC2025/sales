@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Paper, Box, Typography, useTheme, useMediaQuery, Chip } from '@mui/material';
 import ChatRoomList from '../components/chat/ChatRoomList';
 import MessageView from '../components/chat/MessageView';
 import { useChat } from '../contexts/ChatContext';
+import { useNotifications } from '../contexts/NotificationContext';
 
 const ChatPage: React.FC = () => {
   const { openRoomIds, rooms, openRoom, closeRoom, getRoomDisplayName } = useChat();
+  const { markAsReadByLink } = useNotifications();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const activeRoomId = openRoomIds.length > 0 ? openRoomIds[openRoomIds.length - 1] : null;
+
+  useEffect(() => {
+    if (activeRoomId) {
+      markAsReadByLink(`/chat?roomId=${activeRoomId}`);
+    }
+  }, [activeRoomId, markAsReadByLink]);
 
   const DesktopLayout = () => (
     <Paper sx={{ display: 'flex', height: 'calc(100vh - 150px)', overflow: 'hidden' }}>

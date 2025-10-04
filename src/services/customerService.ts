@@ -32,8 +32,7 @@ export class CustomerService {
       sendToUser(creator.managerId, { type: 'NEW_NOTIFICATION', payload: notification });
     }
 
-    // Notify all admins
-    const admins = await prisma.user.findMany({ where: { userType: UserType.ADMIN_STAFF } });
+    const admins = await prisma.user.findMany({ where: { userType: { in: [UserType.ADMIN_STAFF, UserType.MIDDLE_MANAGER, UserType.GENERAL_HQ_MANAGER] } } });
     for (const admin of admins) {
       // Skip sending notification to the creator if they are an admin
       if (admin.id === creator.id) continue;

@@ -1,10 +1,10 @@
-import { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import type { Notification } from '../types/notification';
-import { getNotifications, pollNotifications, markAsRead } from '../services/notificationService';
+import { getNotifications, markAsRead } from '../services/notificationService';
 
-// Simple event emitter for local events if needed, but not for websockets
+// Simple event emitter for local events
 class EventEmitter {
   private listeners: { [event: string]: Function[] } = {};
   subscribe(event: string, callback: Function) {
@@ -27,7 +27,6 @@ export const eventEmitter = new EventEmitter();
 interface NotificationContextType {
   notifications: Notification[];
   unreadCount: number;
-  // These can be implemented later if needed
   markNotificationAsRead: (notificationId: string) => void;
   markAsReadByLink: (link: string) => void;
 }
@@ -35,51 +34,79 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, token } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [latestDate, setLatestDate] = useState<string | undefined>(undefined);
-  const isPolling = useRef(false);
+  const ws = useRef<WebSocket | null>(null);
 
-  // Initial fetch of all notifications
-  useEffect(() => {
-    if (isAuthenticated) {
-      getNotifications()
-        .then(initialNotifications => {
-          setNotifications(initialNotifications);
-          if (initialNotifications.length > 0) {
-            setLatestDate(initialNotifications[0].createdAt);
-          }
-        })
-        .catch(console.error);
+  const addNotification = useCallback((newNotification: Notification) => {
+    setNotifications(prev => [
+      newNotification, 
+      ...prev.filter(n => n.id !== newNotification.id)
+    ]);
+    if (newNotification.type === 'NEW_CHAT_MESSAGE') {
+      eventEmitter.dispatch('NEW_MESSAGE_FROM_NOTIFICATION', { 
+        roomId: newNotification.link?.split('=')[1] 
+      });
     }
-  }, [isAuthenticated]);
+  }, []);
 
-  // Polling effect
   useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const intervalId = setInterval(async () => {
-      if (isPolling.current) return;
-      isPolling.current = true;
-      try {
-        const newNotifications = await pollNotifications(latestDate);
-        if (newNotifications.length > 0) {
-          setNotifications(prev => [...newNotifications, ...prev]);
-          setLatestDate(newNotifications[0].createdAt);
-        }
-      } catch (error) {
-        console.error('Polling for notifications failed', error);
-      } finally {
-        isPolling.current = false;
+    if (!isAuthenticated || !token) {
+      if (ws.current) {
+        ws.current.close();
+        ws.current = null;
       }
-    }, 5000); // Poll every 5 seconds
+      return;
+    }
 
-    return () => clearInterval(intervalId);
-  }, [isAuthenticated, latestDate]);
+    const connect = () => {
+      const wsUrl = `wss://sales-ofg0.onrender.com/ws?token=${token}`;
+      ws.current = new WebSocket(wsUrl);
+
+      ws.current.onopen = () => {
+        console.log('WebSocket Connected');
+        // Send auth message as required by the backend
+        ws.current?.send(JSON.stringify({ type: 'AUTH', payload: token }));
+      };
+
+      ws.current.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          if (message.type === 'NEW_NOTIFICATION') {
+            addNotification(message.payload as Notification);
+          }
+        } catch (error) {
+          console.error('Error parsing WebSocket message:', error);
+        }
+      };
+
+      ws.current.onerror = (error) => {
+        console.error('WebSocket Error:', error);
+      };
+
+      ws.current.onclose = () => {
+        console.log('WebSocket Disconnected. Reconnecting...');
+        setTimeout(connect, 5000); // Reconnect after 5 seconds
+      };
+    };
+
+    connect();
+
+    // Initial fetch of past notifications
+    getNotifications().then(setNotifications).catch(console.error);
+
+    return () => {
+      if (ws.current) {
+        ws.current.onclose = null; // Prevent reconnect on manual close
+        ws.current.close();
+      }
+    };
+  }, [isAuthenticated, token, addNotification]);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   const markNotificationAsRead = async (notificationId: string) => {
+    const originalNotifications = notifications;
     setNotifications(prev => 
       prev.map(n => n.id === notificationId ? { ...n, isRead: true } : n)
     );
@@ -87,10 +114,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       await markAsRead(notificationId);
     } catch (error) {
       console.error('Failed to mark notification as read', error);
-      // Optionally revert state on error
-      setNotifications(prev => 
-        prev.map(n => n.id === notificationId ? { ...n, isRead: false } : n)
-      );
+      setNotifications(originalNotifications); // Revert on error
     }
   };
 
@@ -98,20 +122,16 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     const notificationsToUpdate = notifications.filter(n => n.link === link && !n.isRead);
     if (notificationsToUpdate.length === 0) return;
 
-    // Optimistically update UI
+    const originalNotifications = notifications;
     setNotifications(prev => 
       prev.map(n => n.link === link ? { ...n, isRead: true } : n)
     );
 
-    // Call API for all of them
     try {
       await Promise.all(notificationsToUpdate.map(n => markAsRead(n.id)));
     } catch (error) {
       console.error('Failed to mark notifications by link as read', error);
-      // Optionally revert state on error
-      setNotifications(prev => 
-        prev.map(n => notificationsToUpdate.some(ntu => ntu.id === n.id) ? { ...n, isRead: false } : n)
-      );
+      setNotifications(originalNotifications); // Revert on error
     }
   };
 
