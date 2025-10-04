@@ -38,7 +38,7 @@ const BulletinBoard: React.FC<BulletinBoardProps> = ({ postIdToExpand }) => {
         )}
       </Box>
       {posts.map((post, index) => (
-        <PostCard key={post.id} post={post} number={posts.length - index} postIdToExpand={postIdToExpand} />
+        <PostCard key={post.id} post={post} number={posts.length - index} postIdToExpand={postIdToExpand} onPostDeleted={fetchPosts} />
       ))}
       <NewPostDialog 
         open={openNewPost} 

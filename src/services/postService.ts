@@ -89,4 +89,13 @@ export class PostService {
 
     return newComment;
   }
-}
+
+  /**
+   * Delete a post and all its comments
+   */
+  public static async deletePost(postId: string): Promise<void> {
+    await prisma.$transaction([
+      prisma.comment.deleteMany({ where: { postId } }),
+      prisma.post.delete({ where: { id: postId } }),
+    ]);
+  }

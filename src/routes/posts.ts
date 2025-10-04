@@ -53,5 +53,10 @@ export default async function (fastify: FastifyInstance, opts: FastifyPluginOpti
       const post = await PostService.createPost({ title, content, authorId: userPayload.id, fileUrl, fileType });
       reply.code(201).send({ success: true, data: post });
     });
+
+    fastifyInstance.delete('/:id', async (request: FastifyRequest<{ Params: { id: string } }>, reply) => {
+      await PostService.deletePost(request.params.id);
+      reply.send({ success: true, message: 'Post deleted successfully' });
+    });
   });
 }
