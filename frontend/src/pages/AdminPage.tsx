@@ -56,11 +56,11 @@ const AdminPage: React.FC = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [openManagerDialog, setOpenManagerDialog] = useState(false);
-  const [_selectedUserForManager, _setSelectedUserForManager] = useState<UserForAdminResponse | null>(null);
+  const [selectedUserForManager, setSelectedUserForManager] = useState<UserForAdminResponse | null>(null);
   const [logDialogOpen, setLogDialogOpen] = useState(false);
   const [selectedUserForLog, setSelectedUserForLog] = useState<UserForAdminResponse | null>(null);
   const { startOneOnOneChat } = useChat();
-  const { markAsReadByLink } = useNotifications();
+  const { notifications, markAsReadByLinkPrefix } = useNotifications();
   const [searchParams] = useSearchParams();
   const highlightedUserId = searchParams.get('highlight');
 

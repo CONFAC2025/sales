@@ -32,14 +32,6 @@ const MyPage: React.FC = () => {
           <ListItem>
             <ListItemText primary="연락처" secondary={user.phone} />
           </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText primary="소속 부서" secondary={user.department?.name || '미지정'} />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText primary="소속 팀" secondary={user.team?.name || '미지정'} />
-          </ListItem>
         </List>
       </Paper>
     </Box>

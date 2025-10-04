@@ -41,7 +41,7 @@ const CustomersPage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { user: currentUser, isAuthenticated } = useAuth();
   const { sendSystemMessageToUser } = useChat();
-  const { notifications, markAsReadByLink } = useNotifications();
+  const { notifications, markAsReadByLink, markAsReadByLinkPrefix } = useNotifications();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [users, setUsers] = useState<UserForAdminResponse[]>([]);
   

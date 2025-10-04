@@ -34,8 +34,6 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
-
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, token } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
