@@ -198,12 +198,10 @@ const CustomersPage: React.FC = () => {
               onClick={() => handleRowClick(customer)}
             >
               <TableCell>
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography component="span">{customer.name}</Typography>
-                  {unreadCustomerUpdates.has(`/customers/${customer.id}`) && (
-                    <Typography variant="caption" color="secondary.main">
-                      {unreadCustomerUpdates.get(`/customers/${customer.id}`)}
-                    </Typography>
+                  {unreadCustomerUpdates.has(`/customers/${customer.id}/edit`) && (
+                    <Chip label="N" color="secondary" size="small" sx={{ ml: 1 }} />
                   )}
                 </Box>
               </TableCell>
@@ -215,7 +213,11 @@ const CustomersPage: React.FC = () => {
               <TableCell>{getPotentialChip(customer.potential)}</TableCell>
               <TableCell>{getStatusChip(customer.status)}</TableCell>
               <TableCell>{new Date(customer.createdAt).toLocaleDateString()}</TableCell>
-              <TableCell>{customer.registeredBy?.name}</TableCell>
+              <TableCell>
+                {customer.registeredBy ? 
+                  `${customer.registeredBy.name} (${[customer.registeredBy.department?.name, customer.registeredBy.team?.name].filter(Boolean).join(' / ')})` 
+                  : '-'}
+              </TableCell>
               <TableCell align="right" onClick={(e) => e.stopPropagation()}>
                 {canSendMessage && customer.registeredById && customer.registeredById !== currentUser?.id && (
                   <IconButton onClick={() => handleSendMessage(customer)} size="small">
@@ -240,9 +242,9 @@ const CustomersPage: React.FC = () => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{customer.name}</Typography>
-                <Button size="small" variant="outlined" sx={{ p: '0 4px', height: '20px', fontSize: '0.6rem' }} onClick={(e) => {e.stopPropagation(); handleRowClick(customer)}}>
-                  변경이력
-                </Button>
+                {unreadCustomerUpdates.has(`/customers/${customer.id}/edit`) && (
+                  <Chip label="N" color="secondary" size="small" />
+                )}
               </Box>
               <Typography variant="body2" color="text.secondary">
                 <Link href={`tel:${customer.phone}`} onClick={(e) => e.stopPropagation()}>{customer.phone}</Link>
@@ -251,16 +253,13 @@ const CustomersPage: React.FC = () => {
             
             {getStatusChip(customer.status)}
 
-            {unreadCustomerUpdates.has(`/customers/${customer.id}`) && (
-              <Typography variant="caption" color="secondary.main" sx={{ display: 'block', mt: 0.5}}>
-                {unreadCustomerUpdates.get(`/customers/${customer.id}`)}
-              </Typography>
-            )}
             <Box sx={{ mt: 1.5, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0.5 }}>
               <Typography variant="body2"><b>관심물건:</b> {customer.interestedProperty || '-'}</Typography>
               <Typography variant="body2"><b>유입경로:</b> {customer.source || '-'}</Typography>
               <Typography variant="body2"><b>성향:</b> {getPotentialChip(customer.potential)}</Typography>
-              <Typography variant="body2"><b>등록자:</b> {customer.registeredBy?.name}</Typography>
+              <Typography variant="body2"><b>등록자:</b> {customer.registeredBy ? 
+                  `${customer.registeredBy.name} (${[customer.registeredBy.department?.name, customer.registeredBy.team?.name].filter(Boolean).join(' / ')})` 
+                  : '-'}</Typography>
             </Box>
             <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
               등록일: {new Date(customer.createdAt).toLocaleDateString()}

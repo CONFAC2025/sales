@@ -142,9 +142,19 @@ export class CustomerService {
         registeredBy: {
           select: {
             name: true,
-          }
-        }
-      }
+            department: {
+              select: {
+                name: true,
+              },
+            },
+            team: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 

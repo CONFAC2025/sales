@@ -17,5 +17,7 @@ export interface Customer {
   // This field is included from the backend query
   registeredBy?: {
     name: string;
+    department: { name: string } | null;
+    team: { name: string } | null;
   };
 }
