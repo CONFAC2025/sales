@@ -11,6 +11,7 @@ export interface ChatMessage {
   content: string | null; // Content can be null for file-only messages
   fileUrl?: string;
   fileType?: string;
+  fileName?: string;
   createdAt: string;
   sender: { id: string; name: string };
   roomId: string;
