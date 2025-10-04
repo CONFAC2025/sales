@@ -41,9 +41,22 @@ export const authMiddleware = (allowedUserTypes?: UserType[]) => {
       const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
       request.user = decoded;
 
+      console.log(`[Auth] Decoded user info:`, {
+        id: decoded.id,
+        userId: decoded.userId,
+        userType: decoded.userType,
+        organizationLevel: decoded.organizationLevel
+      });
+      console.log(`[Auth] Allowed user types:`, allowedUserTypes);
+
       // 3. Check if user type is allowed (if specific types are required)
       if (Array.isArray(allowedUserTypes) && allowedUserTypes.length > 0 && !allowedUserTypes.includes(decoded.userType)) {
-        return reply.code(403).send({ message: 'Permission denied.' });
+        console.log(`[Auth] Permission denied - User type ${decoded.userType} not in allowed types:`, allowedUserTypes);
+        return reply.code(403).send({ 
+          message: 'Permission denied.',
+          userType: decoded.userType,
+          allowedTypes: allowedUserTypes
+        });
       }
 
       console.log(`[Auth] Success for user: ${decoded.userId}`);

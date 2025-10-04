@@ -1,6 +1,5 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import websocket from '@fastify/websocket';
 import multipart from '@fastify/multipart';
 import staticPlugin from '@fastify/static';
 import path from 'path';
@@ -15,7 +14,7 @@ import siteSettingsRoutes from './routes/siteSettings';
 import notificationRoutes from './routes/notifications';
 import resourceRoutes from './routes/resource';
 import activityLogRoutes from './routes/activityLog';
-import { startWebSocketServer } from './websocket';
+import { initializeWebSocket } from './websocket';
 
 dotenv.config();
 
@@ -43,14 +42,14 @@ server.addHook('preHandler', (request, reply, done) => {
   }
   done();
 });
-server.register(websocket);
+
 server.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } });
 server.register(staticPlugin, {
   root: path.join(__dirname, '..', 'uploads'),
   prefix: '/uploads/',
 });
 
-startWebSocketServer(server);
+initializeWebSocket(server);
 
 server.register(authRoutes, { prefix: '/api/auth' });
 server.register(adminRoutes, { prefix: '/api/admin' });

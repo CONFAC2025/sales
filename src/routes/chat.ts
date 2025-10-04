@@ -13,14 +13,8 @@ export default async function (fastify: FastifyInstance, opts: FastifyPluginOpti
 
   // HTTP routes for chat
   fastify.register(async function(fastify) {
-    fastify.addHook('preHandler', authMiddleware([
-      UserType.ADMIN_STAFF, 
-      UserType.DEPARTMENT_MANAGER, 
-      UserType.TEAM_LEADER, 
-      UserType.SALES_STAFF,
-      UserType.REAL_ESTATE,
-      UserType.PARTNER_STAFF
-    ]));
+    // 임시로 모든 승인된 사용자에게 채팅 권한 부여
+    fastify.addHook('preHandler', authMiddleware());
 
     fastify.get('/subordinates', async (request, reply) => {
       const userPayload = request.user!;

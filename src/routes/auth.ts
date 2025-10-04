@@ -1,6 +1,8 @@
 import { FastifyInstance, FastifyPluginOptions, FastifyRequest, FastifyReply } from 'fastify';
 import { AuthService } from '../services/authService';
 import { User, UserType } from '@prisma/client';
+import { authMiddleware } from '../middleware/auth';
+import { prisma } from '../utils/prisma';
 
 // 요청 본문의 타입 정의
 interface RegisterBody extends Pick<User, 'userId' | 'password' | 'name' | 'phone'> { 
@@ -33,6 +35,39 @@ export default async function (fastify: FastifyInstance, opts: FastifyPluginOpti
     } catch (error: any) {
       fastify.log.error(error);
       reply.code(401).send({ success: false, message: error.message });
+    }
+  });
+
+  // 현재 사용자 정보 확인 API (디버깅용)
+  fastify.get('/me', { preHandler: [authMiddleware()] }, async (request, reply) => {
+    try {
+      const userPayload = request.user!;
+      const fullUser = await prisma.user.findUnique({ 
+        where: { id: userPayload.id },
+        select: {
+          id: true,
+          userId: true,
+          name: true,
+          userType: true,
+          organizationLevel: true,
+          status: true
+        }
+      });
+      
+      if (!fullUser) {
+        return reply.code(404).send({ message: 'User not found' });
+      }
+
+      reply.send({ 
+        success: true, 
+        data: {
+          tokenInfo: userPayload,
+          dbInfo: fullUser
+        }
+      });
+    } catch (error: any) {
+      fastify.log.error(error);
+      reply.code(500).send({ success: false, message: error.message });
     }
   });
 }

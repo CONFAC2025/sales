@@ -63,10 +63,64 @@ async function main() {
     console.log(`    ✅ ${department.name} 하위 10개 팀 생성 완료`);
   }
 
-  // 3. 테스트 사용자 생성 (10명)
+  // 3. 테스트 사용자 생성 (다양한 권한 레벨)
   console.log('\n3. 테스트 사용자 생성 중...');
   const teams = await prisma.team.findMany();
-  for (let i = 1; i <= 10; i++) {
+  const departments = await prisma.department.findMany();
+
+  // 총괄본부장 생성
+  const generalHqPassword = await bcrypt.hash('password123', 12);
+  await prisma.user.create({
+    data: {
+      userId: 'general_hq',
+      email: 'general_hq@example.com',
+      password: generalHqPassword,
+      name: '총괄본부장',
+      phone: '010-1111-1111',
+      userType: UserType.GENERAL_HQ_MANAGER,
+      status: UserStatus.APPROVED,
+      organizationLevel: 2,
+    },
+  });
+  console.log(`  ✅ 총괄본부장 생성 완료`);
+
+  // 본부장 생성
+  const deptManagerPassword = await bcrypt.hash('password123', 12);
+  await prisma.user.create({
+    data: {
+      userId: 'dept_manager',
+      email: 'dept_manager@example.com',
+      password: deptManagerPassword,
+      name: '본부장',
+      phone: '010-2222-2222',
+      userType: UserType.DEPARTMENT_MANAGER,
+      status: UserStatus.APPROVED,
+      organizationLevel: 2,
+      departmentId: departments[0].id,
+    },
+  });
+  console.log(`  ✅ 본부장 생성 완료`);
+
+  // 팀장 생성
+  const teamLeaderPassword = await bcrypt.hash('password123', 12);
+  await prisma.user.create({
+    data: {
+      userId: 'team_leader',
+      email: 'team_leader@example.com',
+      password: teamLeaderPassword,
+      name: '팀장',
+      phone: '010-3333-3333',
+      userType: UserType.TEAM_LEADER,
+      status: UserStatus.APPROVED,
+      organizationLevel: 3,
+      departmentId: teams[0].departmentId,
+      teamId: teams[0].id,
+    },
+  });
+  console.log(`  ✅ 팀장 생성 완료`);
+
+  // 일반 사원들 생성 (7명)
+  for (let i = 1; i <= 7; i++) {
     const userPassword = await bcrypt.hash('password123', 12);
     const randomTeam = teams[Math.floor(Math.random() * teams.length)];
     await prisma.user.create({
