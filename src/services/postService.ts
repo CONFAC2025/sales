@@ -99,3 +99,4 @@ export class PostService {
       prisma.post.delete({ where: { id: postId } }),
     ]);
   }
+}
